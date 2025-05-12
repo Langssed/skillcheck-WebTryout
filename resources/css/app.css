@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source "../views";
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+.nav-active {
+    @apply transform -translate-x-0;
+}
+
+.ham-active span:nth-child(1) {
+    @apply transform rotate-45;
+}
+.ham-active span:nth-child(2) {
+    @apply transform scale-0;
+}
+.ham-active span:nth-child(3) {
+    @apply transform -rotate-45;
+}
+
+.user-arrow-down {
+    @apply -rotate-135 mb-[3px];
+}
+
+.user-container-active {
+    @apply transform scale-100;
+}
