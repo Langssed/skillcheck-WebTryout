@@ -21,13 +21,15 @@
                     <input type="hidden" name="role" value="{{ $role->name }}">
                     
                     @if($hasRoles->contains('name', $role->name))
-                        <button type="submit" class="px-8 py-4 text-white bg-yellow-500 hover:bg-yellow-600 text-xl font-medium rounded-xl">
-                            {{ $role->name }}
+                        <button type="submit" class="flex flex-col items-center px-8 py-4 min-w-50 text-white bg-yellow-500 hover:bg-yellow-600 text-xl font-medium rounded-xl">
+                          <i data-feather="user" class="w-10 h-10"></i>
+                          {{ $role->name }}
                         </button>
-                    @else
-                        <button type="submit" class="px-8 py-4 text-white bg-slate-500 cursor-not-allowed text-xl font-medium rounded-xl" disabled>
-                            {{ $role->name }}
-                        </button>
+                        @else
+                        <div class="flex flex-col items-center px-8 py-4 min-w-50 text-white bg-slate-500 cursor-not-allowed text-xl font-medium rounded-xl" disabled>
+                          <i data-feather="x-circle" class="w-10 h-10"></i>
+                          {{ $role->name }}
+                        </div>
                     @endif
                 </form>
             @endforeach

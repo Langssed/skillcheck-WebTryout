@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ChooseRoleController;
+use App\Http\Controllers\HistoryController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -30,6 +31,8 @@ Route::get('/question-lists', [LevelController::class, 'index']);
 
 Route::get('/question/{level:slug}/{subject:slug}', [SubjectController::class, 'index']);
 
+Route::post('/histories', [HistoryController::class, 'store']);
+
 
 // Choose Role
 Route::middleware('auth', 'has_role')->group(function () {
@@ -39,7 +42,7 @@ Route::middleware('auth', 'has_role')->group(function () {
 
 
 // Dashboard
-Route::middleware(['auth', 'role_selected'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard');

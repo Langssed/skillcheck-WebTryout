@@ -11,9 +11,13 @@ class ChooseRoleController extends Controller
 {
     public function index()
     {
+        Session::forget('active_role');
+        if(Auth::user()->roles->count() === 1){
+            Session::put('active_role', Auth::user()->roles->first()->name);
+            return redirect()->route('dashboard');
+        }
         $roles = Role::all();
         $hasRoles = Auth::user()->roles;
-        Session::forget('active_role');
         return view('auth.chooseRole', compact('roles', 'hasRoles'));
     }
 

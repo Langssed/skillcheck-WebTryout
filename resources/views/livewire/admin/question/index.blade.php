@@ -83,6 +83,9 @@
                                 <td class="text-truncate" style="max-width: 200px;">{{ $question->content }}</td>
                                 {{-- <td>{{ $question->correct_answer }}</td> --}}
                                 <td>
+                                    <button wire:click="show({{ $question->id }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#showModal">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     <button wire:click="edit({{ $question->id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -159,6 +162,10 @@
             </script>
         @endscript
         {{-- Close Delete Modal --}}
+
+        {{-- Show Modal --}}
+        @include('livewire.admin.question.show')
+        {{-- Show Modal --}}
     </div>
     <!-- /.content-wrapper -->
 </div>

@@ -20,6 +20,6 @@ class SuperAdminSeeder extends Seeder
             'school' => 'SMAS PIIS',
             'password' => Hash::make('password'),
         ]);
-        $user->assignRole('super Admin', 'admin');
+        $user->assignRole('super admin', 'admin');
     }
 }

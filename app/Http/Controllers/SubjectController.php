@@ -17,6 +17,8 @@ class SubjectController extends Controller
         ->get();
 
         return view('questions.index', [
+            'level' => $level,
+            'subject' => $subject,
             'questions' => $questions
         ]);
     }

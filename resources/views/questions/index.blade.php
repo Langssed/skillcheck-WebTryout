@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
   {{-- Tailwind --}}
   @vite('resources/css/app.css')
   <script src="https://unpkg.com/feather-icons"></script>
@@ -121,13 +122,14 @@
       initScoreToggle();
     }
 
-    function showScore(total, score, correct, wrong, nul){
+    function showScore(score, persentageScore, correct, wrong, nul, total){
       questionContent.innerHTML = `<div class="mx-auto bg-slate-800 rounded-xl py-4 px-10">
         <h1 class="font-bold md:text-2xl text-xl text-center text-teal-500">Selamat anda sudah menyelesaikan Tryout</h1>
-        <h3 class="text-teal-50 font-medium mt-6 md:text-lg text-md text-center">Total score dari Tryout ini adalah ${total}</h3>
+        <h3 class="text-teal-50 font-medium mt-6 md:text-lg text-md text-center">Total score Tryout anda adalah ${score}</h3>
         <h3 class="text-teal-50 font-medium mt-1 md:text-lg text-md text-center">Anda Mendapatkan Score</h3>
-        <h1 class="md:text-8xl text-6xl font-bold text-teal-500 mb-3 mt-6 text-center">${score}</h1>
+        <h1 class="md:text-8xl text-6xl font-bold text-teal-500 mb-3 mt-6 text-center">${persentageScore}</h1>
         <h5 class="md:text-md text-sm mt-1 font-medium text-teal-50 text-center">Benar ${correct}; Salah ${wrong} ;Tidak dijawab ${nul};</h5>
+        <h5 class="md:text-md text-sm mt-1 font-medium text-teal-50 text-center">Dari ${total} soal</h5>
         <div class="flex justify-end mt-8">
           <a href="/" class="md:px-8 md:py-3 px-5 py-2 bg-teal-500 text-teal-50 rounded-2xl md:text-xl text-md font-medium">Selesai</a>
         </div>
@@ -150,10 +152,11 @@
 
     function submitQuestion() {
       let score = 0;
-      let total = 0;
+      let persentageScore = 0;
       let correct = 0;
       let wrong = 0;
       let nul = 0;
+      let total = 0;
       correctAnswers.map(answer => {
         total += 1;
         if(answer === 'BENAR'){
@@ -169,7 +172,52 @@
         }
       })
 
-      showScore(total, score, correct, wrong, nul);
+      persentageScore = (score / total) * 100
+
+      if(persentageScore < 0){
+        persentageScore = 0;
+      }
+
+      storeHistory(score, persentageScore, correct, total);
+      showScore(score, persentageScore, correct, wrong, nul, total);
+
+    }
+
+    function storeHistory(score, persentageScore, correct, total){
+      const CURRENT_USER_ID = {{ Auth::user()->id }};
+      const CURRENT_LEVEL_ID = {{ $level->id }};
+      const CURRENT_SUBJECT_ID = {{ $subject->id }};
+
+      const data = {
+        user_id: CURRENT_USER_ID,
+        level_id: CURRENT_LEVEL_ID,
+        subject_id: CURRENT_SUBJECT_ID,
+        score: score,
+        persentage_score: persentageScore,
+        total_questions: total,
+        correct_answer: correct,
+      }
+
+      fetch('/histories', {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+          'X-CSRF-TOKEN' : '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log('data berhasil disimpan', result);
+      })
+      .catch(error => {
+        console.log('gagal menyimpan data', error);
+      });
     }
 
     function initScoreToggle() {

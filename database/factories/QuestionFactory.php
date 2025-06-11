@@ -21,8 +21,8 @@ class QuestionFactory extends Factory
     {
         return [
             'level_id' => Level::inRandomOrder()->first()->id,
-            'Subject_id' => Subject::inRandomOrder()->first()->id,
-            'Category_id' => Category::inRandomOrder()->first()->id,
+            'subject_id' => Subject::inRandomOrder()->first()->id,
+            'category_id' => Category::inRandomOrder()->first()->id,
             'content' => fake()->sentence(mt_rand(10, 20)),
             'option_a' => fake()->sentence(1),
             'option_b' => fake()->sentence(1),

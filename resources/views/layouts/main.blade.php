@@ -13,8 +13,8 @@
     {{-- Header --}}
     @include('partials.header')
 
-    {{-- Contiane --}}
-    <div class="w-full">
+    {{-- Contianer --}}
+    <div class="w-full min-h-[100dvh]">
         @yield('container')
     </div>
 

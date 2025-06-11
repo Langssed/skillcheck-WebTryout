@@ -123,7 +123,6 @@ class Index extends Component
         $this->subject_id = Subject::findOrFail($question->subject_id)->name;
         $this->category_id = category::findOrFail($question->category_id)->name;
         $this->content = $question->content;
-        // $this->correct_answer = $question->correct_answer;
         $this->question_id = $question->id;
     }
 
@@ -133,5 +132,19 @@ class Index extends Component
         $question->delete();
 
         $this->dispatch('closeDeleteModal');
+    }
+
+    public function show($id){
+        $question = Question::findOrFail($id);
+
+        $this->level_id = Level::findOrFail($question->level_id)->name;
+        $this->subject_id = Subject::findOrFail($question->subject_id)->name;
+        $this->category_id = category::findOrFail($question->category_id)->name;
+        $this->content = $question->content;
+        $this->option_a = $question->option_a;
+        $this->option_b = $question->option_b;
+        $this->option_c = $question->option_c;
+        $this->option_d = $question->option_d;
+        $this->correct_answer = $question->correct_answer;
     }
 }
