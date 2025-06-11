@@ -22,8 +22,17 @@ class Subject extends Model
         return $this->hasMany(Question::class);
     }
 
-    // public function getRouteKeyName()
-    // {
-    //     return 'slug';
-    // }
+    public function scopeFilter($query, $search){
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+                ->orWhereHas('level', function($q2) use ($search){
+                    $q2->where('name', 'like', '%' . $search . '%');
+                });
+            });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

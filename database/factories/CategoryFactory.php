@@ -21,7 +21,7 @@ class CategoryFactory extends Factory
         return [
             'subject_id' => Subject::inRandomOrder()->first()->id,
             'name' => fake()->unique()->sentence(1),
-            'slug' => Str::slug(fake()->unique()->words(2, true))
+            // 'slug' => Str::slug(fake()->unique()->words(2, true))
         ];
     }
 }

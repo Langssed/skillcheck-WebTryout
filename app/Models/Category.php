@@ -17,4 +17,13 @@ class Category extends Model
     public function questions(){
         return $this->hasMany(Question::class);
     }
+
+    public function scopeFilter($query, $search){
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+                ->orWhereHas('subject', function($q2) use ($search){
+                    $q2->where('name', 'like', '%' . $search . '%');
+                });
+            });
+    }
 }

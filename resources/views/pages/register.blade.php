@@ -24,71 +24,100 @@
             <h2 class="text-2xl font-bold my-2 mb-8 text-slate-900 text-center">
               Buat Akun Baru
             </h2>
-            <form action="">
-              <label for="name" class="font-medium text-md">Nama Lengkap</label>
-              <div class="relative flex justify-center">
-                <i data-feather="user" class="absolute left-3 top-5"></i
-                ><input
-                  type="text"
-                  name="name"
-                  id="name"
-                  class="w-full text-md px-2 pl-12 mt-2 mb-5 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
-                  placeholder="Nama lengkap Anda"
-                />
+            <form action="/auth/register" method="POST">
+              @csrf
+              <div class="w-full mb-5">
+                <label for="name" class="font-medium text-md">Nama Lengkap</label>
+                <div class="relative flex justify-center">
+                  <i data-feather="user" class="absolute left-3 top-5"></i
+                  ><input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value="{{ old('name') }}"
+                    class="w-full text-md px-2 pl-12 mt-2 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
+                    placeholder="Nama lengkap Anda"
+                  />
+                </div>
+                @error('name')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
               </div>
 
-              <label for="email" class="font-medium text-md">Email</label>
-              <div class="relative flex justify-center">
-                <i data-feather="mail" class="absolute left-3 top-5"></i
-                ><input
-                  type="email"
-                  name="email"
-                  id="email"
-                  class="w-full text-md px-2 pl-12 mt-2 mb-5 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
-                  placeholder="contoh@gmail.com"
-                />
+              <div class="w-full mb-5">
+                <label for="email" class="font-medium text-md">Email</label>
+                <div class="relative flex justify-center">
+                  <i data-feather="mail" class="absolute left-3 top-5"></i
+                  ><input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value="{{ old('email') }}"
+                    class="w-full text-md px-2 pl-12 mt-2 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
+                    placeholder="contoh@gmail.com"
+                  />
+                </div>
+                @error('email')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
               </div>
 
-              <label for="school" class="font-medium text-md"
-                >Asal Sekolah</label
-              >
-              <div class="relative flex justify-center">
-                <i data-feather="map-pin" class="absolute left-3 top-5"></i
-                ><input
-                  type="text"
-                  name="school"
-                  id="school"
-                  class="w-full text-md px-2 pl-12 mt-2 mb-5 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
-                  placeholder="Asal Sekolah Anda"
-                />
+              <div class="w-full mb-5">
+                <label for="school" class="font-medium text-md"
+                  >Asal Sekolah</label
+                >
+                <div class="relative flex justify-center">
+                  <i data-feather="map-pin" class="absolute left-3 top-5"></i
+                  ><input
+                    type="text"
+                    name="school"
+                    id="school"
+                    value="{{ old('school') }}"
+                    class="w-full text-md px-2 pl-12 mt-2 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
+                    placeholder="Asal Sekolah Anda"
+                  />
+                </div>
+                @error('school')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
               </div>
 
-              <label for="password" class="font-medium text-md"
-                >Kata Sandi</label
-              >
-              <div class="relative flex justify-center">
-                <i data-feather="lock" class="absolute left-3 top-5"></i
-                ><input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="w-full text-md px-2 pl-12 mt-2 mb-5 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
-                  placeholder="********"
-                />
+              <div class="w-full mb-5">
+                <label for="password" class="font-medium text-md"
+                  >Kata Sandi</label
+                >
+                <div class="relative flex justify-center">
+                  <i data-feather="lock" class="absolute left-3 top-5"></i
+                  ><input
+                    type="password"
+                    name="password"
+                    id="password"
+                    class="w-full text-md px-2 pl-12 mt-2 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
+                    placeholder="********"
+                  />
+                </div>
+                @error('password')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
               </div>
 
-              <label for="confirm" class="font-medium text-md"
-                >Konfirmasi Kata Sandi</label
-              >
-              <div class="relative flex justify-center">
-                <i data-feather="lock" class="absolute left-3 top-5"></i
-                ><input
-                  type="password"
-                  name="confirm"
-                  id="confirm"
-                  class="w-full text-md px-2 pl-12 mt-2 mb-5 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
-                  placeholder="********"
-                />
+              <div class="w-full mb-5">
+                <label for="password_confirmation" class="font-medium text-md"
+                  >Konfirmasi Kata Sandi</label
+                >
+                <div class="relative flex justify-center">
+                  <i data-feather="lock" class="absolute left-3 top-5"></i
+                  ><input
+                    type="password"
+                    name="password_confirmation"
+                    id="password_confirmation"
+                    class="w-full text-md px-2 pl-12 mt-2 py-3 rounded-2xl border border-slate-900 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:border-0 focus:ring-slate-800"
+                    placeholder="********"
+                  />
+                </div>
+                @error('password_confirmation')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
               </div>
 
               <div class="flex items-center justify-center w-full mt-4">

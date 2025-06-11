@@ -8,16 +8,17 @@
                 id="ham-nav"
             >
                 @auth
-                    @if (Auth::user()->role < 2)
+                    @if (Auth::user()->roles->isNotEmpty())
                         <li class="group mt-2 md:mt-0">
                             <a
-                            href="/"
-                            class="md:text-xl text-lg {{ Request::is('/dashboard') ? "md:border-b-3 border-slate-800 md:text-slate-800 text-teal-500" : "md:text-white text-slate-800" }} pb-1 px-2 md:group-hover:border-b-3 group-hover:border-slate-800 md:group-hover:text-slate-800 group-hover:text-teal-500 font-medium"
-                            >Dashboard</a
+                                href="/choose-role"
+                                class="md:text-xl text-lg {{ Request::is('/dashboard') ? 'md:border-b-3 border-slate-800 md:text-slate-800 text-teal-500' : 'md:text-white text-slate-800' }} pb-1 px-2 md:group-hover:border-b-3 group-hover:border-slate-800 md:group-hover:text-slate-800 group-hover:text-teal-500 font-medium"
                             >
+                                Dashboard
+                            </a>
                         </li>
                     @endif
-                @endauth  
+                @endauth
                 <li class="group mt-2 md:mt-0">
                     <a
                         href="/"
@@ -52,7 +53,7 @@
                 {{-- Auth --}}
                 @auth
                 <div id="user-dropdown" class="pb-1 hover:border-b-3 hover:border-white">
-                    <span class="font-medium text-md md:text-lg text-white">Bayek of Siwa</span> <span id="user-arrow" class="md:ml-2 ml-1 border-t-3 border-l-3 border-white rotate-45 -mb-[1px] md:h-3 md:w-3 h-2 w-2 inline-block"></span>
+                    <span class="font-medium text-md md:text-lg text-white">{{ Auth::user()->name }}</span> <span id="user-arrow" class="md:ml-2 ml-1 border-t-3 border-l-3 border-white rotate-45 -mb-[1px] md:h-3 md:w-3 h-2 w-2 inline-block"></span>
                 </div>
                 @endauth
                 {{-- Auth --}}
@@ -60,7 +61,10 @@
                 {{-- User Dropdown Start --}}
                 <div id="user-container" class="flex flex-col gap-1 w-35 absolute top-18 right-12 md:right-0 rounded-xl px-6 py-4 bg-teal-50 border-2 border-teal-500 scale-0 origin-top transition duration-500">
                     <a href="" class="text-slate-800 hover:text-teal-500 text-md font-medium">Profile</a>
-                    <a href="" class="class="text-red-800 hover:opacity-80 text-md font-medium text-left"">Logout</a>
+                    <form action="/auth/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="text-red-800 hover:opacity-80 text-md font-medium text-left"">Logout</a>
+                    </form>
                 </div>
                 {{-- User Dropdown End --}}
                 

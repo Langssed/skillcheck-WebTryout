@@ -23,9 +23,8 @@ class DatabaseSeeder extends Seeder
         Category::factory(50)->create();
         Question::factory(150)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(RoleSeeder::class);
+        $this->call(SuperAdminSeeder::class);
+
     }
 }

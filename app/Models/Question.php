@@ -21,4 +21,19 @@ class Question extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeFilter($query, $search){
+        return $query->where(function ($q) use ($search) {
+            $q->where('content', 'like', '%' . $search . '%')
+                ->orWhereHas('category', function($q2) use ($search){
+                    $q2->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('subject', function($q3) use ($search){
+                    $q3->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('level', function($q3) use ($search){
+                    $q3->where('name', 'like', '%' . $search . '%');
+                });
+        });
+    }
 }
