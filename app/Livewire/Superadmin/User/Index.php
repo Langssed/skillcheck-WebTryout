@@ -7,6 +7,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Carbon;
 
 class Index extends Component
 {
@@ -27,6 +31,33 @@ class Index extends Component
         );
         return view('livewire.superadmin.user.index', $data);
     }
+
+    public function exportExcel()
+    {
+        $timestamp = Carbon::now()->format('dHis');
+        $filename = 'data-users_' . $timestamp . '.xlsx';
+
+        return Excel::download(new UsersExport, $filename);
+    }
+
+    public function exportPdf()
+    {
+        $timestamp = Carbon::now()->format('dHis');
+        $filename = 'data-users_' . $timestamp . '.pdf';
+        $users = User::select('id', 'name', 'email', 'school')->get()->map(function ($user) {
+            foreach ($user->toArray() as $key => $value) {
+                $user->$key = mb_convert_encoding(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $value ?? ''), 'UTF-8', 'UTF-8');
+            }
+            return $user;
+        });
+
+        return response()->streamDownload(function () use ($users) {
+            echo Pdf::loadView('exports.users', [
+                'users' => $users
+            ])->stream();
+        }, $filename);
+    }
+
 
     public function resetSearch(){
         $this->search = "";

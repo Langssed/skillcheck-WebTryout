@@ -46,34 +46,34 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard');
-    })->middleware(['permission:Dashboard Access', 'role_selected'])
+    })->middleware(['role_selected.permission:Dashboard Access'])
       ->name('dashboard');
 
     Route::view('dashboard/user', 'dashboard.user.index')
-        ->middleware('permission:User Access')
+        ->middleware('role_selected.permission:User Access')
         ->name('dashboard.user.index');
 
     Route::view('dashboard/role', 'dashboard.role.index')
-        ->middleware('permission:Role Access')
+        ->middleware('role_selected.permission:Role Access')
         ->name('dashboard.role.index');
 
     Route::view('dashboard/permission', 'dashboard.permission.index')
-        ->middleware('permission:Permission Access')
+        ->middleware('role_selected.permission:Permission Access')
         ->name('dashboard.permission.index');
 
     Route::view('dashboard/level', 'dashboard.level.index')
-        ->middleware('permission:Level Access')
+        ->middleware('role_selected.permission:Level Access')
         ->name('dashboard.level.index');
 
     Route::view('dashboard/subject', 'dashboard.subject.index')
-        ->middleware('permission:Subject Access')
+        ->middleware('role_selected.permission:Subject Access')
         ->name('dashboard.subject.index');
 
     Route::view('dashboard/category', 'dashboard.category.index')
-        ->middleware('permission:Category Access')
+        ->middleware('role_selected.permission:Category Access')
         ->name('dashboard.category.index');
 
     Route::view('dashboard/question', 'dashboard.question.index')
-        ->middleware('permission:Question Access')
+        ->middleware('role_selected.permission:Question Access')
         ->name('dashboard.question.index');
 });

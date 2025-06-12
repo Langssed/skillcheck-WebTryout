@@ -33,12 +33,25 @@
                     
                     <div class="btn-group dropleft">
                         <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-print mr-1"></i>
-                            Cetak
+                            <i class="fas fa-file-import mr-1"></i>
+                            Import
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item text-success" href="#"><i class="fas fa-file-excel mr-1"></i>Excel</a>
-                            <a class="dropdown-item text-danger" href="#"><i class="fas fa-file-pdf mr-1"></i>PDF</a>
+                            <div class="p-4 bg-light border rounded shadow-sm">
+                                <form wire:submit.prevent="importQuestions">
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Pilih File Excel</label>
+                                        <input type="file" wire:model="file" class="form-control" id="file" accept=".xlsx,.xls">
+                                        @error('file') 
+                                            <div class="text-danger small mt-1">{{ $message }}</div> 
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-upload"></i> Import Excel
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,6 +115,20 @@
         </div>
 
         </section>
+
+        {{-- sukses import soal --}}
+        @script
+        <script>
+                $wire.on('importQuestions', () => {
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: "Berhasil Import Soal",
+                        icon: "success"
+                    });
+                });
+            </script>
+        @endscript
+        {{-- sukses import soal --}}
 
         {{-- Create Modal --}}
         @include('livewire.admin.question.create')

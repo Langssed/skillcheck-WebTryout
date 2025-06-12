@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
-            'role_selected' => EnsureRoleIsSelected::class,
+            'role_selected.permission' => EnsureRoleIsSelected::class,
             'has_role' => EnsureUserHasRole::class,
         ]);
     })

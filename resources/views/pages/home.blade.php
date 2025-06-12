@@ -27,15 +27,28 @@
               <h3 class="md:text-lg text-md text-slate-800 font-medium mt-5">
                 Yuk, semangat belajar!
               </h3>
-              <a href="/register"
-                class="px-8 py-3 rounded-2xl bg-teal-500 mt-8 w-2/5 flex justify-center hover:opacity-80"
-              >
-                <span
-                  class="md:text-lg text-md whitespace-nowrap text-white text-center font-medium"
+              @guest
+                <a href="/register"
+                  class="px-8 py-3 rounded-2xl bg-teal-500 mt-8 w-2/5 flex justify-center hover:opacity-80"
                 >
-                  Daftar Sekarang
-                </span>
-              </a>
+                  <span
+                    class="md:text-lg text-md whitespace-nowrap text-white text-center font-medium"
+                  >
+                    Daftar Sekarang
+                  </span>
+                </a>
+              @endguest
+              @auth
+                <a href="/question-lists"
+                  class="px-8 py-3 rounded-2xl bg-teal-500 mt-8 w-2/5 flex justify-center hover:opacity-80"
+                >
+                  <span
+                    class="md:text-lg text-md whitespace-nowrap text-white text-center font-medium"
+                  >
+                    Mulai Tryout Sekarang
+                  </span>
+                </a>
+              @endauth
             </div>
             <div class="md:w-2/5 hidden md:block ml-10">
               <img src="{{ asset('img/hero.svg') }}" alt="" />

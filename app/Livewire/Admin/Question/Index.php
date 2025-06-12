@@ -10,13 +10,20 @@ use Livewire\WithPagination;
 use App\Models\Question;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\QuestionsImport;
 
-class Index extends Component
-{
-    use withPagination;
-    protected $paginationTheme = 'bootstrap';
-    public $paginate = "10";
-    public $search = "";
+    
+    class Index extends Component
+    {
+        use withPagination;
+        protected $paginationTheme = 'bootstrap';
+        public $paginate = "10";
+        public $search = "";
+        
+        use WithFileUploads;
+        public $file;
 
     public $level_id, $subject_id, $category_id , $content, $option_a, $option_b, $option_c, $option_d, $correct_answer, $question_id;
     public function render()
@@ -29,6 +36,18 @@ class Index extends Component
             'questions' => Question::filter($this->search)->orderBy('level_id', 'desc')->paginate($this->paginate)
         );
         return view('livewire.admin.question.index', $data);
+    }
+
+    public function importQuestions()
+    {
+        $this->validate([
+            'file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new QuestionsImport, $this->file->getRealPath());
+
+        $this->reset('file');
+        $this->dispatch('importQuestions');
     }
 
     public function resetSearch(){

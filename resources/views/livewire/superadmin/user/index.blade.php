@@ -37,8 +37,8 @@
                             Cetak
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item text-success" href="#"><i class="fas fa-file-excel mr-1"></i>Excel</a>
-                            <a class="dropdown-item text-danger" href="#"><i class="fas fa-file-pdf mr-1"></i>PDF</a>
+                            <a class="dropdown-item text-success" wire:click='exportExcel()'><i class="fas fa-file-excel mr-1"></i>Excel</a>
+                            <a class="dropdown-item text-danger" wire:click='exportPdf()'><i class="fas fa-file-pdf mr-1"></i>PDF</a>
                         </div>
                     </div>
                 </div>
