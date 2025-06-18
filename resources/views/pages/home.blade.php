@@ -4,7 +4,7 @@
     <!-- Hero Section Start -->
     <section class="pt-38 pb-22">
         <div class="container max-w-screen-xl mx-auto px-4">
-          <div class="flex">
+          <div class="flex flex-col-reverse items-center md:flex-row">
             <div class="md:w-3/5 w-full">
               <h1 class="md:text-3xl text-2xl text-teal-500">
                 TRYOUT ONLINE: UNTUK SD, SMP, SMA, UTBK, SNBT, STAN, CPNS/CASN,
@@ -50,7 +50,7 @@
                 </a>
               @endauth
             </div>
-            <div class="md:w-2/5 hidden md:block ml-10">
+            <div class="md:w-2/5 md:block md:ml-10 mb-10 w-3/5">
               <img src="{{ asset('img/hero.svg') }}" alt="" />
             </div>
           </div>

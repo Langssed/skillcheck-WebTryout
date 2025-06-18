@@ -8,8 +8,11 @@ use App\Http\Controllers\ChooseRoleController;
 use App\Http\Controllers\HistoryController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/check-email', [AuthController::class, 'checkEmail']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
+Route::get('/auth/redirect', [AuthController::class, 'googleRedirect']);
+Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
 
 Route::get('/login', function () {
     return view('pages.login');

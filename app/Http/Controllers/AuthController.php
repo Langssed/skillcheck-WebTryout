@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,9 @@ class AuthController extends Controller
 
         $validate['password'] = Hash::make($validate['password']);
 
-        User::create($validate);
+        $user = User::create($validate);
+
+        $user->assignRole('user');
 
         return redirect('/login');
     }
@@ -49,5 +52,44 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $emailExists = User::where('email', $request->email)->exists();
+
+        return response()->json(['exists' => $emailExists]);
+    }
+
+    public function googleRedirect() {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback() {
+        $socialUser = Socialite::driver('google')->user();
+
+        $registeredUser = User::where('google_id', $socialUser->id)->first();
+
+        if(!$registeredUser){
+            $user = User::updateOrCreate([
+                'google_id' => $socialUser->id,
+            ], [
+                'name' => $socialUser->name,
+                'email' => $socialUser->email,
+                'password' => Hash::make('password'),
+                'google_token' => $socialUser->token,
+                'google_refresh_token' => $socialUser->refreshToken,
+            ]);
+
+            Auth::login($user);
+
+            $user->assignRole('user');
+        
+            return redirect('/');
+        }
+
+        Auth::login($registeredUser);
+    
+        return redirect('/');
     }
 }

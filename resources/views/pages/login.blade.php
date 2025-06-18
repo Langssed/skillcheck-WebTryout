@@ -75,6 +75,13 @@
                 </button>
               </div>
             </form>
+            <div class="flex items-center justify-center w-full mt-4">
+              <a href="/auth/redirect"
+                class="flex items-center gap-2 justify-center bg-red-500 px-8 py-3 w-full rounded-2xl text-lg font-bold text-white hover:opacity-75"
+              >
+                <i class="fa-brands fa-google"></i>Masuk dengan google
+              </a>
+            </div>
             <p class="text-base text-slate-900 text-center mt-3">
               Belom punya akun?
               <a href="/register" class="text-base text-teal-500 hover:opacity-80"

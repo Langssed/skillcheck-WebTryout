@@ -17,14 +17,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleSeeder::class);
+        $this->call(PermissionSeeder::class);
+        $this->call(SuperAdminSeeder::class);
+
         User::factory(10)->create();
         Level::factory(3)->create();
         Subject::factory(30)->create();
         Category::factory(50)->create();
         Question::factory(150)->create();
-
-        $this->call(RoleSeeder::class);
-        $this->call(SuperAdminSeeder::class);
 
     }
 }

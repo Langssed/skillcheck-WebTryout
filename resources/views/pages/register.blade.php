@@ -24,7 +24,7 @@
             <h2 class="text-2xl font-bold my-2 mb-8 text-slate-900 text-center">
               Buat Akun Baru
             </h2>
-            <form action="/auth/register" method="POST">
+            <form id="registerForm" action="/auth/register" method="POST"> <!-- 💡 -->
               @csrf
               <div class="w-full mb-5">
                 <label for="name" class="font-medium text-md">Nama Lengkap</label>
@@ -122,8 +122,9 @@
 
               <div class="flex items-center justify-center w-full mt-4">
                 <button
-                  class="bg-slate-800 px-8 py-3 w-full rounded-2xl text-lg font-bold text-teal-50 hover:opacity-75"
-                >
+                  type="button"
+                  id="submitBtn"
+                  class="bg-slate-800 px-8 py-3 w-full rounded-2xl text-lg font-bold text-teal-50 hover:opacity-75">
                   Daftar
                 </button>
               </div>
@@ -140,3 +141,109 @@
     </section>
     <!-- Register Section End -->
 @endsection
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("registerForm");
+    const submitBtn = document.getElementById("submitBtn");
+
+    submitBtn.addEventListener("click", async function (e) {
+      e.preventDefault();
+
+      // Reset semua pesan error
+      document.querySelectorAll(".text-red-500").forEach(el => el.textContent = "");
+
+      let isValid = true;
+
+      // Ambil input
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const school = document.getElementById("school").value.trim();
+      const password = document.getElementById("password").value;
+      const passwordConfirmation = document.getElementById("password_confirmation").value;
+
+      // Validasi name: required|min:3|max:32
+      if (name.length < 3 || name.length > 32) {
+        showError("name", "Nama harus 3-32 karakter.");
+        isValid = false;
+      }
+
+      // Validasi email: required|email|unique
+      if (email === "") {
+        showError("email", "Email wajib diisi.");
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        showError("email", "Format email tidak valid.");
+        isValid = false;
+      } else {
+        const unique = await isEmailUnique(email);
+        if (!unique) {
+          showError("email", "Email sudah terdaftar.");
+          isValid = false;
+        }
+      }
+
+      // Validasi school: required|min:4|max:64
+      if (school.length < 4 || school.length > 64) {
+        showError("school", "Asal sekolah harus 4-64 karakter.");
+        isValid = false;
+      }
+
+      // Validasi password: required|min:8|max:32
+      if (password.length < 8 || password.length > 32) {
+        showError("password", "Password harus 8-32 karakter.");
+        isValid = false;
+      }
+
+      // Validasi konfirmasi password
+      if (passwordConfirmation === "") {
+        showError("password_confirmation", "Konfirmasi password wajib diisi.");
+        isValid = false;
+      } else if (password !== passwordConfirmation) {
+        showError("password_confirmation", "Konfirmasi password tidak cocok.");
+        isValid = false;
+      }
+
+      if (isValid) {
+        form.submit();
+      }
+    });
+
+    function showError(inputId, message) {
+      const input = document.getElementById(inputId);
+      const errorSpan = input.closest(".w-full.mb-5").querySelector(".text-red-500");
+      if (errorSpan) {
+        errorSpan.textContent = message;
+      } else {
+        const span = document.createElement("span");
+        span.className = "text-sm text-red-500";
+        span.textContent = message;
+        input.closest(".w-full.mb-5").appendChild(span);
+      }
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    async function isEmailUnique(email) {
+      try {
+        const response = await fetch("/check-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+        return !data.exists;
+      } catch (error) {
+        console.error("Gagal cek email:", error);
+        return false;
+      }
+    }
+  });
+</script>
