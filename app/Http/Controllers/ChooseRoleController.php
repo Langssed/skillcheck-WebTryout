@@ -29,13 +29,6 @@ class ChooseRoleController extends Controller
 
         Session::put('active_role', $request->role);
 
-        // if($request->role === 'admin'){
-        //     return redirect()->route('dashboard.level.index');
-        // }
-
-        // if($request->role === 'teacher'){
-        //     return redirect()->route('dashboard.question.index');
-        // }
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.profile');
     }
 }

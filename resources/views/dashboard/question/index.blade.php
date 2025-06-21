@@ -6,6 +6,6 @@
 
 @section('content')
 
-    @livewire('admin.question.index')
+    @livewire('question.index')
 
 @endsection

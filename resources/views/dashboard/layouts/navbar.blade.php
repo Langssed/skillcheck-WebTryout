@@ -5,9 +5,11 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li>
-        <a href="/choose-role" class="btn btn-md btn-info">Pilih Role</a>
-      </li>
+      @if (Auth::user()->roles->count() !== 1)
+        <li>
+          <a href="/choose-role" class="btn btn-md btn-info">Pilih Role</a>
+        </li>
+      @endif
     </ul>
 
     <!-- Right navbar links -->

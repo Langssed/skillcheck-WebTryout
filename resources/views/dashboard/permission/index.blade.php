@@ -6,6 +6,6 @@
 
 @section('content')
 
-    @livewire('superadmin.permission.index')
+    @livewire('permission.index')
 
 @endsection

@@ -52,6 +52,14 @@ Route::middleware(['auth'])->group(function () {
     })->middleware(['role_selected.permission:Dashboard Access'])
       ->name('dashboard');
 
+    Route::view('dashboard/profile', 'dashboard.profile.index')
+        ->middleware('role_selected.permission:Profile Access')
+        ->name('dashboard.profile');
+
+    Route::view('dashboard/history', 'dashboard.history.index')
+        ->middleware('role_selected.permission:History Access')
+        ->name('dashboard.history');
+
     Route::view('dashboard/user', 'dashboard.user.index')
         ->middleware('role_selected.permission:User Access')
         ->name('dashboard.user.index');

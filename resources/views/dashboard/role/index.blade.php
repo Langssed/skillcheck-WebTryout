@@ -6,6 +6,6 @@
 
 @section('content')
 
-    @livewire('superadmin.role.index')
+    @livewire('role.index')
 
 @endsection

@@ -22,6 +22,10 @@ class Subject extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function Histories(){
+        return $this->hasMany(History::class);
+    }
+
     public function scopeFilter($query, $search){
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', '%' . $search . '%')

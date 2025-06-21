@@ -14,6 +14,8 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::create(['name' => 'Dashboard Access']);
+        Permission::create(['name' => 'Profile Access']);
+        Permission::create(['name' => 'History Access']);
         Permission::create(['name' => 'Role Access']);
         Permission::create(['name' => 'Permission Access']);
         Permission::create(['name' => 'User Access']);

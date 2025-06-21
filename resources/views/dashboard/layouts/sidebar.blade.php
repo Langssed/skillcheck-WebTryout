@@ -43,6 +43,24 @@
         </li>
         @endif
 
+        @if($isSuperAdmin || in_array('Profile Access', $activePermissions))
+        <li class="nav-item">
+          <a href="{{ route('dashboard.profile') }}" class="nav-link @yield('dashboardProfile')">
+            <i class="nav-icon fas fa-user-circle"></i>
+            <p>Profile</p>
+          </a>
+        </li>
+        @endif
+
+        @if($isSuperAdmin || in_array('History Access', $activePermissions))
+        <li class="nav-item">
+          <a href="{{ route('dashboard.history') }}" class="nav-link @yield('dashboardHistory')">
+            <i class="nav-icon fas fa-history"></i>
+            <p>History</p>
+          </a>
+        </li>
+        @endif
+
         @if($isSuperAdmin || in_array('Role Access', $activePermissions))
         <li class="nav-item">
           <a href="{{ route('dashboard.role.index') }}" class="nav-link @yield('dashboardRole')">
@@ -64,7 +82,7 @@
         @if($isSuperAdmin || in_array('User Access', $activePermissions))
         <li class="nav-item">
           <a href="{{ route('dashboard.user.index') }}" class="nav-link @yield('dashboardUser')">
-            <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-users"></i>
             <p>User</p>
           </a>
         </li>
