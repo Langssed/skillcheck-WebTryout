@@ -3,46 +3,94 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {{-- Tailwind --}}
-    @vite('resources/css/app.css')
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
     <title>Skill Check</title>
+
+    <style>
+      body {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .role-card {
+        min-width: 220px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .role-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .disabled-role {
+        pointer-events: none;
+        opacity: 0.6;
+      }
+
+      .header-icon {
+        font-size: 50px;
+        color: #ffc107;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: #6c757d;
+      }
+
+      .footer {
+        position: fixed;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+        color: #aaa;
+        font-size: 0.9rem;
+      }
+    </style>
   </head>
   <body>
 
-    <div class="flex flex-col mt-20 items-center w-full h-[100vh]">
-        <h3 class="text-3xl font-semibold text-slate-800 text-center mb-8">Pilih Role</h3>
+    <div class="container d-flex flex-column mt-5 align-items-center justify-content-center">
+      <div class="text-center mb-2">
+        <div class="header-icon mb-3"><i class="fas fa-user-check"></i></div>
+        <h2 class="font-weight-bold text-dark">Pilih Peran Anda</h2>
+        <p class="subtitle">Akses fitur berdasarkan peran yang telah diberikan kepada akun Anda.</p>
+      </div>
 
-        <div class="flex gap-4 flex-wrap justify-center">
-            @foreach ($roles as $role)
-                <form method="POST" action="{{ route('choose.role.store') }}">
-                    @csrf
-                    <input type="hidden" name="role" value="{{ $role->name }}">
-                    
-                    @if($hasRoles->contains('name', $role->name))
-                        <button type="submit" class="flex flex-col items-center px-8 py-4 min-w-50 text-white bg-yellow-500 hover:bg-yellow-600 text-xl font-medium rounded-xl">
-                          <i data-feather="user" class="w-10 h-10"></i>
-                          {{ $role->name }}
-                        </button>
-                        @else
-                        <div class="flex flex-col items-center px-8 py-4 min-w-50 text-white bg-slate-500 cursor-not-allowed text-xl font-medium rounded-xl" disabled>
-                          <i data-feather="x-circle" class="w-10 h-10"></i>
-                          {{ $role->name }}
-                        </div>
-                    @endif
-                </form>
-            @endforeach
-        </div>
+      <div class="d-flex flex-wrap justify-content-center">
+        @foreach ($roles as $role)
+          <form method="POST" action="{{ route('choose.role.store') }}" class="m-3">
+            @csrf
+            <input type="hidden" name="role" value="{{ $role->name }}">
+
+            @if($hasRoles->contains('name', $role->name))
+              <button type="submit" class="btn btn-warning text-white role-card d-flex flex-column align-items-center p-4 rounded shadow">
+                <i class="fas fa-user-tag fa-2x mb-2"></i>
+                <span class="h5 mb-0 text-uppercase">{{ $role->name }}</span>
+              </button>
+            @else
+              <div class="btn btn-secondary role-card disabled-role d-flex flex-column align-items-center p-4 rounded shadow">
+                <i class="fas fa-lock fa-2x mb-2"></i>
+                <span class="h5 mb-0 text-uppercase">{{ $role->name }}</span>
+              </div>
+            @endif
+          </form>
+        @endforeach
+      </div>
     </div>
 
+    <div class="footer">
+      &copy; {{ date('Y') }} SkillCheck App — All rights reserved.
+    </div>
 
-    <!-- Javascript -->
-    <script src="{{ asset('js/script.js') }}"></script>
-
-    <!-- Feather Icon -->
-    <script>
-      feather.replace();
-    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

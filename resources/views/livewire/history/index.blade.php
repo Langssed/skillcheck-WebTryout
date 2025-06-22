@@ -32,11 +32,11 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tingkat</th>
                             <th>Mata Pelajaran</th>
-                            <th>Level</th>
                             <th>Total Soal</th>
+                            {{-- <th>Jawaban Benar</th> --}}
                             <th>Skor</th>
-                            <th>Jawaban Benar</th>
                             <th>Persentase</th>
                             <th>Sertifikat</th>
                             <th>Tanggal</th>
@@ -46,10 +46,10 @@
                         @foreach ($histories as $index => $history)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $history->subject->name }}</td>
                             <td>{{ $history->level->name }}</td>
+                            <td>{{ $history->subject->name }}</td>
                             <td>{{ $history->total_questions }}</td>
-                            <td>{{ $history->correct_answer }}</td>
+                            {{-- <td>{{ $history->correct_answer }}</td> --}}
                             <td>{{ $history->score }}</td>
                             <td>{{ $history->persentage_score }}%</td>
                             <td>

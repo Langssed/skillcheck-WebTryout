@@ -41,7 +41,7 @@
               <i data-feather="info" class="w-5 h-5"></i>
               <div class="absolute hidden flex-wrap items-center justify-start bg-red-50 rounded-3xl border border-red-800 w-50 py-2 px-4 right-0 top-8" id="score-container">
                 <h6 class="font-medium text-shadow-sm text-red-800">Benar = +1 Point</h6>
-                <h6 class="font-medium text-shadow-sm text-red-800">Salah = -1 Point</h6>
+                <h6 class="font-medium text-shadow-sm text-red-800">Salah = 0 Point</h6>
                 <h6 class="font-medium text-shadow-sm text-red-800">Tidak Jawab = -1 Point</h6>
               </div>
             </div>
@@ -163,8 +163,8 @@
           score += 1;
           correct += 1;
         } else{
-          score -= 1;
           if(!answer){
+            score -= 1;
             nul += 1;
           } else{
             wrong += 1;

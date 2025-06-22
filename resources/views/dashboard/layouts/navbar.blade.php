@@ -7,7 +7,8 @@
       </li>
       @if (Auth::user()->roles->count() !== 1)
         <li>
-          <a href="/choose-role" class="btn btn-md btn-info">Pilih Role</a>
+          <a href="/" class="btn btn-md btn-success"><i class="fas fa-home"></i></a>
+          <a href="/choose-role" class="btn btn-md btn-info"><i class="fas fa-user-check mr-1"></i>Pilih Role</a>
         </li>
       @endif
     </ul>

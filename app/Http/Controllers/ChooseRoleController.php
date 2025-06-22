@@ -14,7 +14,7 @@ class ChooseRoleController extends Controller
         Session::forget('active_role');
         if(Auth::user()->roles->count() === 1){
             Session::put('active_role', Auth::user()->roles->first()->name);
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard.profile');
         }
         $roles = Role::all();
         $hasRoles = Auth::user()->roles;

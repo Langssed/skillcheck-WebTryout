@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
   <!-- Brand Logo -->
   <a href="/" class="brand-link">
-    <img src="{{ asset('adminlte3/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="{{ asset('img/logoSK.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">Skill Check</span>
   </a>
 
@@ -32,8 +32,6 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <li class="nav-header text-uppercase">menu {{ session('active_role') }}</li>
-
         @if($isSuperAdmin || in_array('Dashboard Access', $activePermissions))
         <li class="nav-item">
           <a href="{{ route('dashboard') }}" class="nav-link @yield('dashboard')">
@@ -42,6 +40,8 @@
           </a>
         </li>
         @endif
+
+        <li class="nav-header text-uppercase">menu {{ session('active_role') }}</li>
 
         @if($isSuperAdmin || in_array('Profile Access', $activePermissions))
         <li class="nav-item">
@@ -118,7 +118,7 @@
         @if($isSuperAdmin || in_array('Question Access', $activePermissions))
         <li class="nav-item">
           <a href="{{ route('dashboard.question.index') }}" class="nav-link @yield('dashboardQuestion')">
-            <i class="nav-icon fas fa-question"></i>
+            <i class="nav-icon fas fa-question-circle"></i>
             <p>Soal</p>
           </a>
         </li>

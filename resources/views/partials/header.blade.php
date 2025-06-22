@@ -2,7 +2,10 @@
 <header class="bg-teal-500 fixed top-0 left-0 w-full z-[9999]">
     <div class="container max-w-screen-xl mx-auto px-5">
         <div class="flex justify-between py-4 items-center relative">
-            <a href="/" class="text-3xl font-bold text-white hover:text-slate-800">skillcheck.</a>
+            <a href="/" class="text-3xl font-bold text-white hover:text-slate-800 flex gap-2 items-center">
+                <img src="{{ asset('img/logoSK.png') }}" alt="skillcheck" class="w-15 rounded-lg">
+                skillcheck.
+            </a>
             <ul
                 class="md:flex md:static translate-x-50 md:translate-x-0 md:bg-transparent gap-10 absolute right-2 top-20 bg-teal-50 border-2 border-teal-500 px-8 py-4 rounded-xl transition duration-500"
                 id="ham-nav"
