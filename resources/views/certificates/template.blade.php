@@ -12,7 +12,7 @@
         body {
             margin: 0;
             font-family: 'Lato', sans-serif;
-            color: #0D2A4C; /* Deep Navy Blue */
+            color: #0D2A4C;
             background-color: #F8F8F8;
             background-image: url("{{ public_path('certificate-assets/certificate-bg.png') }}");
             background-size: cover;
@@ -49,7 +49,7 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: #B9975B; /* Antique Gold */
+            color: #B9975B;
             margin-bottom: 40px;
         }
 
@@ -86,12 +86,11 @@
             color: #0D2A4C;
         }
 
-        /* --- PERUBAHAN CSS UNTUK TANDA TANGAN --- */
         .signature-area {
             position: absolute;
             bottom: 120px;
-            left: 60px; /* Menyesuaikan dengan padding container */
-            right: 60px; /* Menyesuaikan dengan padding container */
+            left: 60px;
+            right: 60px;
             width: auto;
         }
 
@@ -101,12 +100,11 @@
         }
         
         .signature-cell {
-            width: 33.33%; /* Dibagi rata untuk 3 kolom, atau 50% untuk 2 kolom */
+            width: 33.33%;
             text-align: center;
             vertical-align: bottom;
-            padding: 0 15px; /* Memberi jarak antar tanda tangan */
+            padding: 0 15px;
         }
-        /* --- AKHIR PERUBAHAN CSS --- */
 
         .signature-line {
             border-bottom: 1px solid #0D2A4C;
@@ -124,7 +122,6 @@
             color: #555;
         }
         
-        /* --- PERUBAHAN CSS UNTUK SEGEL --- */
         .official-seal {
             position: absolute;
             bottom: 110px;
@@ -139,11 +136,9 @@
             color: #B9975B;
             background-color: rgba(255, 255, 255, 0.8);
             
-            /* Menghapus Flexbox, menggunakan padding untuk centering vertikal */
             padding-top: 32px; 
-            box-sizing: border-box; /* Penting agar padding tidak menambah tinggi elemen */
+            box-sizing: border-box;
         }
-        /* --- AKHIR PERUBAHAN CSS --- */
 
         .certificate-footer {
             position: absolute;
@@ -166,7 +161,7 @@
         <hr class="separator">
         <div class="description">
             Atas pencapaian luar biasa dalam menyelesaikan ujian<br>
-            <strong>{{ $subject->name }}</strong> pada level <strong>{{ $level->name }}</strong><br>
+            <strong>{{ $subject->name }}</strong> pada tingkat <strong>{{ $level->name }}</strong><br>
             dengan skor <strong>{{ $history->score }}/{{ $history->total_questions }} ({{ $history->persentage_score }}%)</strong>.
         </div>
 
