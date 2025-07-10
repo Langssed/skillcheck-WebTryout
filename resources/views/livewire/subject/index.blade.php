@@ -30,17 +30,6 @@
                     <div>
                         <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus mr-1"></i>Tambah Data</button>
                     </div>
-                    
-                    <div class="btn-group dropleft">
-                        <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-print mr-1"></i>
-                            Cetak
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item text-success" href="#"><i class="fas fa-file-excel mr-1"></i>Excel</a>
-                            <a class="dropdown-item text-danger" href="#"><i class="fas fa-file-pdf mr-1"></i>PDF</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="card-body">

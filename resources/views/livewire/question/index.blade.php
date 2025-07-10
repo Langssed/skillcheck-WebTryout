@@ -26,34 +26,34 @@
 
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <!-- Tombol Tambah Data -->
                     <div>
-                        <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus mr-1"></i>Tambah Data</button>
-                    </div>
-                    
-                    <div class="btn-group dropleft">
-                        <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-file-import mr-1"></i>
-                            Import
+                        <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal">
+                            <i class="fas fa-plus mr-1"></i>Tambah Data
                         </button>
-                        <div class="dropdown-menu">
-                            <div class="p-4 bg-light border rounded shadow-sm">
-                                <form wire:submit.prevent="importQuestions">
-                                    <div class="mb-3">
-                                        <label for="file" class="form-label">Pilih File Excel</label>
-                                        <input type="file" wire:model="file" class="form-control" id="file" accept=".xlsx,.xls">
-                                        @error('file') 
-                                            <div class="text-danger small mt-1">{{ $message }}</div> 
-                                        @enderror
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-upload"></i> Import Excel
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
                     </div>
+
+                    <!-- Form Import Soal: [Download] [Input File] [Import] -->
+                    <form wire:submit.prevent="importQuestions" class="d-flex align-items-center gap-2">
+                        <label for="file" class="mb-0 mr-2 font-weight-bold">Import Soal:</label>
+
+                        <!-- Button download template -->
+                        <a href="{{ asset('tamplate/template_soal.xlsx') }}" class="btn btn-sm btn-success" download>
+                            <i class="fas fa-download mr-1"></i>Template
+                        </a>
+
+                        <!-- Input file -->
+                        <input type="file" wire:model="file" class="form-control form-control-sm" id="file" accept=".xlsx,.xls" style="width: 200px;">
+                        @error('file')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+
+                        <!-- Button import -->
+                        <button type="submit" class="btn btn-sm btn-warning">
+                            <i class="fas fa-file-import mr-1"></i>Import
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="card-body">

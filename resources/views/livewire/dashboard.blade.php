@@ -181,7 +181,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const userData = {
         superAdmin: {{ $superAdmin }},
         admin: {{ $admin }},
-        noRole: {{ $noRole }},
+        teacher: {{ $teacher }},
+        user: {{ $user }},
     };
 
     // Area Chart
@@ -189,10 +190,10 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(areaCtx, {
         type: 'line',
         data: {
-            labels: ['Super Admin', 'Admin', 'No Role'],
+            labels: ['Super Admin', 'Admin', 'Teacher', 'User'],
             datasets: [{
                 label: 'Jumlah User',
-                data: [userData.superAdmin, userData.admin, userData.noRole],
+                data: [userData.superAdmin, userData.admin, userData.teacher, userData.user],
                 backgroundColor: 'rgba(60,141,188,0.2)',
                 borderColor: 'rgba(60,141,188,1)',
                 pointRadius: 4,
@@ -216,9 +217,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(donutCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Super Admin', 'Admin', 'No Role'],
+            labels: ['Super Admin', 'Admin', 'Teacher', 'User'],
             datasets: [{
-                data: [userData.superAdmin, userData.admin],
+                data: [userData.superAdmin, userData.admin, userData.teacher],
                 backgroundColor: ['#f56954', '#00a65a', '#f39c12']
             }]
         },

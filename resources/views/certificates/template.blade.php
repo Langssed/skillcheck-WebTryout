@@ -150,6 +150,12 @@
             color: #777;
         }
 
+        .check {
+            width: 40px;
+            height: auto;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -169,19 +175,28 @@
             <table class="signature-table">
                 <tr>
                     <td class="signature-cell">
-                        <div class="signature-line"></div>
-                        <div class="signature-name">Antonio Parlindungan S</div>
-                        <div class="signature-title">Chief Executive Officer</div>
+                        <div style="text-align: center; flex: 1;">
+                            <img src="{{ public_path('img/anton.png') }}" alt="TTD Antonio" style="height: 80px; margin-bottom: 5px;">
+                            <div style="border-top: 1px solid #000; width: 160px; margin: 0 auto 5px;"></div>
+                            <div style="font-weight: bold;">Antonio Parlindungan S</div>
+                            <div style="color: gray;">Chief Executive Officer</div>
+                        </div>
                     </td>
                     <td class="signature-cell">
-                        <div class="signature-line"></div>
-                        <div class="signature-name">Elang Pacifico S</div>
-                        <div class="signature-title">Chief Executive Officer</div>
+                        <div style="text-align: center; flex: 1;">
+                            <img src="{{ public_path('img/elang.png') }}" alt="TTD Elang" style="height: 80px; margin-bottom: 5px;">
+                            <div style="border-top: 1px solid #000; width: 160px; margin: 0 auto 5px;"></div>
+                            <div style="font-weight: bold;">Elang Pacifico S</div>
+                            <div style="color: gray;">Chief Executive Officer</div>
+                        </div>
                     </td>
                     <td class="signature-cell">
-                        <div class="signature-line"></div>
-                        <div class="signature-name">Reyner Junistio U</div>
-                        <div class="signature-title">Chief Executive Officer</div>
+                        <div style="text-align: center; flex: 1;">
+                            <img src="{{ public_path('img/reiner.png') }}" alt="TTD Reiner" style="height: 80px; margin-bottom: 5px;">
+                            <div style="border-top: 1px solid #000; width: 160px; margin: 0 auto 5px;"></div>
+                            <div style="font-weight: bold;">Reiner Junistio U</div>
+                            <div style="color: gray;">Chief Executive Officer</div>
+                        </div>
                     </td>
                     </tr>
             </table>
@@ -189,6 +204,8 @@
         
         <div class="official-seal">
             SKILLCHECK<br>VERIFIED
+            <br>
+            <img src="{{ public_path('img/check.png') }}" alt="cheked" class="check">
         </div>
         
         <div class="certificate-footer">

@@ -20,8 +20,8 @@ class Dashboard extends Component
             'question' => Question::count(),
             'superAdmin' => User::role('super admin')->count(),
             'admin' => User::role('admin')->count(),
-            // 'teacher' => User::role('teacher')->count(),
-            'noRole' => User::doesntHave('roles')->count(),
+            'teacher' => User::role('teacher')->count(),
+            'user' => User::role('user')->count(),
         ]);
     }
 }

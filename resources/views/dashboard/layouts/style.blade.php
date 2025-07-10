@@ -11,7 +11,8 @@
 @stack('scripts')
 <!-- FullCalendar -->
 <link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar/main.min.css') }}">
-<link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-daygrid/main.min.css') }}">
-<link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-timegrid/main.min.css') }}">
-<link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-bootstrap/main.min.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-daygrid/main.min.css') }}"> --}}
+{{-- <link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-timegrid/main.min.css') }}">
+<link rel="stylesheet" href="{{ asset('adminlte3/plugins/fullcalendar-bootstrap/main.min.css') }}"> --}}
+
 @stack('styles')

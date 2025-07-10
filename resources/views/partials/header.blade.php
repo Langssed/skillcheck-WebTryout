@@ -63,10 +63,10 @@
 
                 {{-- User Dropdown Start --}}
                 <div id="user-container" class="flex flex-col gap-1 w-35 absolute top-18 right-12 md:right-0 rounded-xl px-6 py-4 bg-teal-50 border-2 border-teal-500 scale-0 origin-top transition duration-500">
-                    <a href="" class="text-slate-800 hover:text-teal-500 text-md font-medium">Profile</a>
+                    {{-- <a href="" class="text-slate-800 hover:text-teal-500 text-md font-medium">Profile</a> --}}
                     <form action="/auth/logout" method="POST">
                         @csrf
-                        <button type="submit" class="text-red-800 hover:opacity-80 text-md font-medium text-left"">Logout</a>
+                        <button type="submit" class="text-red-800 hover:bg-red-600 hover:text-white w-full rounded-xl px-3 py-2 text-md font-medium text-left"">Logout</a>
                     </form>
                 </div>
                 {{-- User Dropdown End --}}
