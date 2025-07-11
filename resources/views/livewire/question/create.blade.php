@@ -10,43 +10,40 @@
         <div class="modal-body">
             <div class="row">
                 <label for="level" class="form-label">Level<span class="text-danger">*</span></label>
-                <select wire:model="level_id" id="level" class="form-control @error('level') is-invalid @enderror">
+                <select wire:model="level_id" id="level" name="level_id" class="form-control @error('level_id') is-invalid @enderror">
                     <option value="">-- Pilih Tingkat --</option>
                     @foreach ($levels as $level)
                         <option value="{{ $level->id }}">{{ $level->name }}</option>
                     @endforeach
                 </select>
-                @error('level')
+                @error('level_id')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+
             <div class="row">
                 <label for="subject" class="form-label">Mapel<span class="text-danger">*</span></label>
-                <select wire:model="subject_id" id="subject" class="form-control @error('subject') is-invalid @enderror">
+                <select wire:model="subject_id" id="subject" name="subject_id" class="form-control @error('subject_id') is-invalid @enderror">
                     <option value="">-- Pilih Mapel --</option>
-                    @foreach ($subjects as $subject)
-                        <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                    @endforeach
                 </select>
-                @error('subject')
+                @error('subject_id')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+
             <div class="row">
                 <label for="category" class="form-label">Kategori<span class="text-danger">*</span></label>
-                <select wire:model="category_id" id="category" class="form-control @error('category') is-invalid @enderror">
+                <select wire:model="category_id" id="category" name="category_id" class="form-control @error('category_id') is-invalid @enderror">
                     <option value="">-- Pilih Kategori --</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
                 </select>
-                @error('category')
+                @error('category_id')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+            
             <div class="row">
                 <label for="content" class="form-label">Soal<span class="text-danger">*</span></label>
-                <input type="text" wire:model="content" id="content" class="form-control @error('content') is-invalid @enderror" placeholder="Masukkan soal">
+                <textarea type="text" wire:model="content" id="content" class="form-control @error('content') is-invalid @enderror" placeholder="Masukkan soal"></textarea>
                 @error('content')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror

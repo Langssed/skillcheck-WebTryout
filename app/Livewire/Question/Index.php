@@ -27,7 +27,7 @@ class Index extends Component
     public $file;
 
     public $level_id, $subject_id, $category_id , $content, $option_a, $option_b, $option_c, $option_d, $correct_answer, $question_id;
-    
+
     public function render()
     {
         $question = Question::query();

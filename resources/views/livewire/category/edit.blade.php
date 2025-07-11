@@ -27,13 +27,6 @@
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
-            <div class="row">
-                <label for="slug" class="form-label">Slug<span class="text-danger">*</span></label>
-                <input type="text" wire:model="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" placeholder="Masukkan slug">
-                @error('slug')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Tutup</button>

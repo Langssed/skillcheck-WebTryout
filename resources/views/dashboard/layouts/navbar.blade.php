@@ -22,7 +22,7 @@
                 class="user-image img-circle elevation-2" 
                 alt="User Image">
           @else
-            <i class="fas fa-user-circle fa-lg text-white mr-1"></i>
+            <i class="fas fa-user-circle fa-lg text-black mr-1"></i>
           @endif
           <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
         </a>

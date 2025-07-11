@@ -162,7 +162,7 @@
         @endscript
         {{-- Close Create Modal --}}
 
-        {{-- Close Create Modal --}}
+        {{-- Update Status Modal --}}
         @script
             <script>
                 $wire.on('updateStatus', () => {
@@ -170,11 +170,13 @@
                         title: "Sukses!",
                         text: "Status berhasil diubah",
                         icon: "success"
+                    }).then(() => {
+                        window.location.reload(); // reload setelah klik OK
                     });
                 });
             </script>
         @endscript
-        {{-- Close Create Modal --}}
+        {{-- Update Status Modal --}}
 
         {{-- Edit Modal --}}
         @include('livewire.question.edit')
@@ -221,4 +223,6 @@
         {{-- Show Modal --}}
     </div>
     <!-- /.content-wrapper -->
+
+    @include('livewire.question.script')
 </div>
