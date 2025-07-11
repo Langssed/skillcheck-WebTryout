@@ -15,26 +15,37 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\QuestionsImport;
 
     
-    class Index extends Component
-    {
-        use withPagination;
-        protected $paginationTheme = 'bootstrap';
-        public $paginate = "10";
-        public $search = "";
+class Index extends Component
+{
+
+    use withPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $paginate = "10";
+    public $search = "";
         
-        use WithFileUploads;
-        public $file;
+    use WithFileUploads;
+    public $file;
 
     public $level_id, $subject_id, $category_id , $content, $option_a, $option_b, $option_c, $option_d, $correct_answer, $question_id;
+    
     public function render()
     {
-        $data = array(
+        $question = Question::query();
+
+        if (session('active_role') === 'teacher') {
+            $question->where('user_id', Auth::user()->id);
+        }
+
+        $data = [
             'title' => 'Data Soal',
             'levels' => Level::all(),
             'subjects' => Subject::all(),
             'categories' => Category::all(),
-            'questions' => Question::filter($this->search)->orderBy('level_id', 'desc')->paginate($this->paginate)
-        );
+            'questions' => $question->filter($this->search)
+                                ->orderBy('status', 'desc')
+                                ->paginate($this->paginate),
+        ];
+
         return view('livewire.question.index', $data);
     }
 
@@ -44,7 +55,8 @@ use App\Imports\QuestionsImport;
             'file' => 'required|file|mimes:xlsx,xls',
         ]);
 
-        Excel::import(new QuestionsImport, $this->file->getRealPath());
+        // Kirim user_id ke class QuestionsImport
+        Excel::import(new QuestionsImport(Auth::user()->id), $this->file->getRealPath());
 
         $this->reset('file');
         $this->dispatch('importQuestions');
@@ -84,9 +96,24 @@ use App\Imports\QuestionsImport;
             'correct_answer.required' => 'Jawaban tidak boleh kosong'
         ]);
 
+        $validate['user_id'] = Auth::user()->id;
+
         Question::create($validate);
 
         $this->dispatch('closeCreateModal');
+    }
+
+    public function updateStatus($questionId, $status)
+    {
+        if (session('active_role') === 'teahcer') {
+            abort(403);
+        }
+
+        $question = Question::findOrFail($questionId);
+        $question->status = $status;
+        $question->save();
+
+        $this->dispatch('updateStatus');
     }
 
     public function edit($id){

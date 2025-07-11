@@ -9,9 +9,24 @@
   @vite('resources/css/app.css')
   <script src="https://unpkg.com/feather-icons"></script>
   <title>Question</title>
+  <style>
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out both;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
 </head>
-<body>
-  <section id="question" class="flex w-full h-[100vh] justify-center items-center bg-teal-50">
+<body class="bg-teal-50">
+  <section id="question" class="flex w-full h-[100vh] justify-center items-center">
     <div class="md:w-1/2 w-4/5" id="question-content">
       {{-- Ada di Script --}}
     </div>
@@ -30,110 +45,220 @@
       if (!q) return;
 
       questionContent.innerHTML = `
-        <h1 class="md:text-4xl text-2xl text-slate-800 font-bold">${q.level.name}</h1>
-        <h2 class="md:text-2xl text-xl text-teal-500 font-semibold mt-6">${q.subject.name}</h2>
-        <h3 class="md:text-xl text-lg text-slate-800 font-mono mt-2">Kategori: ${q.category.name}</h3>
-        <div class="w-full mt-5">
-          <div class="flex justify-between">
-            <h5 class="font-normal text-slate-800 md:text-base text-sm">${index + 1} dari ${questions.length}</h5>
-            <div class="flex gap-1 items-center md:text-base text-sm font-bold text-red-800 hover:underline relative" id="score-rules">
-              <h4>Aturan Score</h4>
-              <i data-feather="info" class="w-5 h-5"></i>
-              <div class="absolute hidden flex-wrap items-center justify-start bg-red-50 rounded-3xl border border-red-800 w-50 py-2 px-4 right-0 top-8" id="score-container">
-                <h6 class="font-medium text-shadow-sm text-red-800">Benar = +1 Point</h6>
-                <h6 class="font-medium text-shadow-sm text-red-800">Salah = 0 Point</h6>
-                <h6 class="font-medium text-shadow-sm text-red-800">Tidak Jawab = -1 Point</h6>
+        <div class="mb-8">
+          <!-- Info Soal -->
+          <h1 class="md:text-4xl text-2xl text-slate-800 font-bold mb-2">${q.level.name}</h1>
+          <h2 class="md:text-2xl text-xl text-teal-500 font-semibold">${q.subject.name}</h2>
+          <h3 class="md:text-xl text-lg text-slate-700 mt-1 font-mono">Kategori: ${q.category.name}</h3>
+
+          <!-- Top Bar -->
+          <div class="w-full mt-6">
+            <div class="flex justify-between items-center">
+              <p class="text-slate-700 md:text-base text-sm">${index + 1} dari ${questions.length}</p>
+
+              <div class="relative group flex items-center gap-1 cursor-pointer text-red-700 font-semibold text-sm md:text-base" id="score-rules">
+                <span>Aturan Score</span>
+                <i data-feather="info" class="w-4 h-4"></i>
+                <div id="score-container" class="absolute top-full right-0 mt-2 z-10 hidden group-hover:flex flex-col bg-red-50 border border-red-800 text-sm rounded-xl shadow px-4 py-3 w-52 transition-all duration-200">
+                  <p class="text-red-800 font-medium">✅ Benar = +1</p>
+                  <p class="text-red-800 font-medium">❌ Salah = 0</p>
+                  <p class="text-red-800 font-medium">⛔ Tidak Jawab = -1</p>
+                </div>
               </div>
             </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 h-[6px] rounded-full mt-2 overflow-hidden">
+              <div class="bg-teal-500 h-full transition-all duration-300"
+                  style="width: ${(index + 1) / questions.length * 100}%;"></div>
+            </div>
           </div>
-          <div class="w-full bg-slate-300 h-[2px] mt-1">
-            <div class="bg-teal-500 h-[2px]" style="width:${((index + 1) / questions.length) * 100}%;"></div>
+
+          <!-- Soal -->
+          <h3 class="mt-6 md:text-lg text-md font-medium text-slate-800">${q.content}</h3>
+
+          <!-- Pilihan Jawaban -->
+          <div class="flex flex-col mt-5 gap-3">
+            ${['A', 'B', 'C', 'D'].map(letter => `
+              <div class="option w-full bg-slate-100 px-5 py-3 rounded-xl shadow hover:bg-teal-500 hover:text-white cursor-pointer transition duration-200 transform active:scale-95">
+                <span class="font-bold mr-2">${letter} |</span> ${q[`option_${letter.toLowerCase()}`]}
+              </div>
+            `).join('')}
           </div>
-        </div>
-        <h3 class="mt-4 md:text-lg text-md font-normal text-slate-800">${q.content}</h3>
-        <div class="flex flex-col mt-6">
-          <div class="option w-full bg-slate-300 px-5 py-2 mt-3 hover:bg-teal-500">
-            <h5><span class="font-bold mr-2">A |</span> ${q.option_a}</h5>
+
+          <!-- Navigasi -->
+          <div class="flex flex-wrap gap-2 justify-end mt-7">
+            <button id="prev-btn" onclick="previousQuestion()" class="flex items-center gap-1 bg-teal-500 text-white font-medium px-4 py-2 rounded-full hover:bg-teal-600 transition">
+              <i data-feather="arrow-left" class="w-4 h-4"></i>
+              <span class="text-sm md:text-base">Sebelumnya</span>
+            </button>
+
+            <button id="next-btn" onclick="nextQuestion()" class="flex items-center gap-1 bg-teal-500 text-white font-medium px-4 py-2 rounded-full hover:bg-teal-600 transition">
+              <span class="text-sm md:text-base">Berikutnya</span>
+              <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </button>
+
+            <button id="submit-btn" onclick="submitQuestion()" class="hidden flex items-center gap-1 bg-slate-800 text-teal-400 font-medium px-4 py-2 rounded-full hover:bg-slate-700 transition">
+              <span class="text-sm md:text-base">Selesai</span>
+              <i data-feather="check-circle" class="w-4 h-4"></i>
+            </button>
           </div>
-          <div class="option w-full bg-slate-300 px-5 py-2 mt-3 hover:bg-teal-500">
-            <h5><span class="font-bold mr-2">B |</span> ${q.option_b}</h5>
-          </div>
-          <div class="option w-full bg-slate-300 px-5 py-2 mt-3 hover:bg-teal-500">
-            <h5><span class="font-bold mr-2">C |</span> ${q.option_c}</h5>
-          </div>
-          <div class="option w-full bg-slate-300 px-5 py-2 mt-3 hover:bg-teal-500">
-            <h5><span class="font-bold mr-2">D |</span> ${q.option_d}</h5>
-          </div>
-        </div>
-        <div class="flex gap-2 justify-end mt-7">
-          <button id="prev-btn" onclick="previousQuestion()" class="flex gap-1 items-center justify-center bg-teal-500 rounded-3xl px-4 py-2 hover:opacity-80 text-slate-800">
-            <i data-feather="arrow-left" class="md:w-6 md:h-6 w-4 h-4"></i>
-            <span class="font-mono md:text-base text-sm">Previous</span>
-          </button>
-          <button id="next-btn" onclick="nextQuestion()" class="flex gap-1 items-center justify-center bg-teal-500 rounded-3xl px-4 py-2 hover:opacity-80 text-slate-800">
-            <span class="font-mono md:text-base text-sm">Next</span>
-            <i data-feather="arrow-right" class="md:w-6 md:h-6 w-4 h-4"></i>
-          </button>
-          <button id="submit-btn" onclick="submitQuestion()" class="hidden flex gap-1 items-center justify-center bg-slate-800 rounded-3xl px-4 py-2 hover:opacity-80 text-teal-500">
-            <span class="font-mono md:text-base text-sm">Finish</span>
-            <i data-feather="arrow-right" class="md:w-6 md:h-6 w-4 h-4"></i>
-          </button>
         </div>
       `;
 
-      // Handle tombol navigasi
-      const prevBtn = document.querySelector('#prev-btn');
-      const nextBtn = document.querySelector('#next-btn');
-      const submitBtn = document.querySelector('#submit-btn');
+      // Toggle tombol
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const submitBtn = document.getElementById('submit-btn');
 
       prevBtn.classList.toggle('hidden', currentIndex === 0);
       nextBtn.classList.toggle('hidden', currentIndex === questions.length - 1);
       submitBtn.classList.toggle('hidden', currentIndex !== questions.length - 1);
 
-      // Jawaban yang dipilih
+      // Handle pilihan jawaban
       const options = [...document.querySelectorAll('.option')];
       const savedAnswer = answers[currentIndex];
       if (savedAnswer) {
         const selectedIndex = ['A', 'B', 'C', 'D'].indexOf(savedAnswer);
         if (selectedIndex !== -1) {
-          options[selectedIndex].classList.add('bg-teal-500');
+          options[selectedIndex].classList.remove('bg-slate-100', 'text-slate-800');
+          options[selectedIndex].classList.add('bg-teal-500', 'text-white');
         }
       }
 
-      for (let i = 0; i < options.length; i++) {
-        options[i].addEventListener('click', function () {
-          for (let j = 0; j < options.length; j++) {
-            options[j].classList.remove('bg-teal-500');
-          }
+      options.forEach((opt, i) => {
+        opt.addEventListener('click', () => {
+          // Reset semua
+          options.forEach(el => {
+            el.classList.remove('bg-teal-500', 'text-white');
+            el.classList.add('bg-slate-100', 'text-slate-800');
+          });
 
-          options[i].classList.add('bg-teal-500');
+          // Tambah style ke yang dipilih
+          opt.classList.remove('bg-slate-100', 'text-slate-800');
+          opt.classList.add('bg-teal-500', 'text-white');
 
+          // Simpan jawaban
           answers[currentIndex] = ['A', 'B', 'C', 'D'][i];
-
-          if(answers[currentIndex] === q.correct_answer){
-            correctAnswers[currentIndex] = 'BENAR';
-          } else{
-            correctAnswers[currentIndex] = 'SALAH';
-          }
+          correctAnswers[currentIndex] = (answers[currentIndex] === q.correct_answer) ? 'BENAR' : 'SALAH';
         });
-      }
+      });
 
       feather.replace();
       initScoreToggle();
     }
 
-    function showScore(score, persentageScore, correct, wrong, nul, total){
-      questionContent.innerHTML = `<div class="mx-auto bg-slate-800 rounded-xl py-4 px-10">
-        <h1 class="font-bold md:text-2xl text-xl text-center text-teal-500">Selamat anda sudah menyelesaikan Tryout</h1>
-        <h3 class="text-teal-50 font-medium mt-6 md:text-lg text-md text-center">Total score Tryout anda adalah ${score}</h3>
-        <h3 class="text-teal-50 font-medium mt-1 md:text-lg text-md text-center">Anda Mendapatkan Score</h3>
-        <h1 class="md:text-8xl text-6xl font-bold text-teal-500 mb-3 mt-6 text-center">${persentageScore}</h1>
-        <h5 class="md:text-md text-sm mt-1 font-medium text-teal-50 text-center">Benar ${correct}; Salah ${wrong} ;Tidak dijawab ${nul};</h5>
-        <h5 class="md:text-md text-sm mt-1 font-medium text-teal-50 text-center">Dari ${total} soal</h5>
-        <div class="flex justify-end mt-8">
-          <a href="/" class="md:px-8 md:py-3 px-5 py-2 bg-teal-500 text-teal-50 rounded-2xl md:text-xl text-md font-medium">Selesai</a>
+    function showScore(score, persentageScore, correct, wrong, nul, total) {
+      questionContent.innerHTML = `
+        <div class="max-w-2xl mx-auto bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 shadow-xl mt-10 animate-fade-in">
+          <div class="text-center space-y-4">
+            <h1 class="font-bold md:text-3xl text-2xl text-teal-400 flex justify-center items-center gap-2">
+              <i data-feather="check-circle" class="w-7 h-7 text-teal-300"></i>
+              Selamat! Tryout Selesai
+            </h1>
+
+            <h3 class="text-teal-50 font-medium text-md md:text-lg">Total Skor Anda adalah:</h3>
+
+            <h1 class="md:text-8xl text-6xl font-extrabold text-teal-400">
+              ${persentageScore}
+            </h1>
+
+            <div class="text-sm md:text-base text-teal-100 space-y-1">
+              <p><i data-feather="award" class="inline w-4 h-4 mr-1"></i> Skor Tryout: <strong>${score}</strong></p>
+              <p><i data-feather="check" class="inline w-4 h-4 mr-1 text-green-400"></i> Benar: <strong>${correct}</strong></p>
+              <p><i data-feather="x" class="inline w-4 h-4 mr-1 text-red-400"></i> Salah: <strong>${wrong}</strong></p>
+              <p><i data-feather="slash" class="inline w-4 h-4 mr-1 text-yellow-400"></i> Tidak Dijawab: <strong>${nul}</strong></p>
+              <p><i data-feather="list" class="inline w-4 h-4 mr-1 text-teal-300"></i> Total Soal: <strong>${total}</strong></p>
+            </div>
+
+            <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+              <a href="/" class="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300">
+                <i data-feather="home" class="w-5 h-5"></i> Kembali ke Beranda
+              </a>
+
+              <button id="btn-evaluation" class="inline-flex items-center gap-2 bg-white border border-teal-500 text-teal-600 font-semibold px-6 py-3 rounded-full hover:bg-teal-500 hover:text-white transition duration-300">
+                <i data-feather="eye" class="w-5 h-5"></i> Lihat Evaluasi
+              </button>
+            </div>
+          </div>
         </div>
-      </div>`
+      `;
+
+      feather.replace();
+
+      // Event: saat tombol evaluasi diklik
+      document.getElementById('btn-evaluation').addEventListener('click', () => {
+        renderEvaluation();
+      });
+    }
+
+    function renderEvaluation() {
+      questionContent.innerHTML = `
+        <div class="mb-10 mt-40">
+          <h2 class="text-3xl font-bold text-teal-500 mb-2 flex items-center gap-2">
+            <i data-feather="clipboard" class="w-6 h-6"></i> Hasil Evaluasi
+          </h2>
+          <p class="text-slate-700">Berikut adalah hasil evaluasi dari jawabanmu.</p>
+        </div>
+      `;
+
+      questions.forEach((q, index) => {
+        const userAnswer = answers[index];
+        const correctAnswer = q.correct_answer;
+        const isCorrect = userAnswer === correctAnswer;
+
+        const statusIcon = isCorrect
+          ? '<i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>'
+          : '<i data-feather="x-circle" class="w-5 h-5 text-red-600"></i>';
+
+        const colorClass = isCorrect
+          ? 'border-green-500 bg-green-50'
+          : 'border-red-500 bg-red-50';
+
+        const html = `
+          <div class="mb-8 border-l-4 ${colorClass} px-5 py-4 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="font-semibold text-lg text-slate-800">Soal ${index + 1}</h3>
+              <div>${statusIcon}</div>
+            </div>
+            <p class="text-slate-700 mb-3">${q.content}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+              <p>
+                <span class="font-semibold text-slate-800">Jawaban Anda:</span>
+                <span class="inline-block px-2 py-1 rounded-full font-bold ${isCorrect ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}">
+                  ${userAnswer ?? 'Tidak Dijawab'}
+                </span>
+              </p>
+              <p>
+                <span class="font-semibold text-slate-800">Jawaban Benar:</span>
+                <span class="inline-block px-2 py-1 rounded-full bg-green-200 text-green-700 font-bold">
+                  ${correctAnswer}
+                </span>
+              </p>
+            </div>
+
+            <p class="mt-2 text-sm">
+              <span class="font-semibold text-slate-800">Status:</span> 
+              <span class="${isCorrect ? 'text-green-600' : 'text-red-600'} font-semibold">
+                ${isCorrect ? 'BENAR' : 'SALAH'}
+              </span>
+            </p>
+          </div>
+        `;
+
+        questionContent.innerHTML += html;
+      });
+
+      questionContent.innerHTML += `
+        <div class="my-12 text-center">
+          <a href="/" class="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300">
+            <i data-feather="home" class="w-5 h-5"></i> Kembali ke Beranda
+          </a>
+        </div>
+      `;
+
+      feather.replace();
     }
 
     function previousQuestion() {
@@ -172,7 +297,8 @@
         }
       })
 
-      persentageScore = (score / total) * 100
+      persentageScore = (score / total) * 100;
+      persentageScore = persentageScore.toFixed(2);
 
       if(persentageScore < 0){
         persentageScore = 0;
@@ -249,10 +375,6 @@
     }
 
     renderQuestion(currentIndex);
-  </script>
-
-  <script>
-    feather.replace();
   </script>
 </body>
 </html>

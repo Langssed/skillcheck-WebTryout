@@ -13,6 +13,7 @@ class SubjectController extends Controller
         
         $questions = Question::where('level_id', $level->id)
         ->where('subject_id', $subject->id)
+        ->where('status', 'diterima')
         ->with(['level', 'category', 'subject'])
         ->get();
 

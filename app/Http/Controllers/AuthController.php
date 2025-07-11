@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         $user->assignRole('user');
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Successfully registered account');
     }
 
     public function login(Request $request){

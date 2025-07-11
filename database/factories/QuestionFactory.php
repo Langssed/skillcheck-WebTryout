@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Level;
 use App\Models\Subject;
 use App\Models\Category;
@@ -23,12 +24,14 @@ class QuestionFactory extends Factory
             'level_id' => Level::inRandomOrder()->first()->id,
             'subject_id' => Subject::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
             'content' => fake()->sentence(mt_rand(10, 20)),
             'option_a' => fake()->sentence(1),
             'option_b' => fake()->sentence(1),
             'option_c' => fake()->sentence(1),
             'option_d' => fake()->sentence(1),
-            'correct_answer' => fake()->randomElement(['A', 'B', 'C', 'D'])
+            'correct_answer' => fake()->randomElement(['A', 'B', 'C', 'D']),
+            'status' => 'diterima',
         ];
     }
 }

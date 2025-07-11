@@ -82,7 +82,7 @@
                             <th>Mapel</th>
                             <th>Kategori</th>
                             <th>Soal</th>
-                            {{-- <th>Jawaban</th> --}}
+                            <th>Status</th>
                             <th>
                                 <i class="fas fa-cog"></i>
                             </th>
@@ -94,7 +94,19 @@
                                 <td>{{ $question->subject->name }}</td>
                                 <td>{{ $question->category->name }}</td>
                                 <td class="text-truncate" style="max-width: 200px;">{{ $question->content }}</td>
-                                {{-- <td>{{ $question->correct_answer }}</td> --}}
+                                <td>
+                                    @if (session('active_role') === 'super admin' || session('active_role') === 'admin')
+                                        <select wire:change="updateStatus({{ $question->id }}, $event.target.value)" class="form-control form-control-sm">
+                                            <option value="review" {{ $question->status == 'review' ? 'selected' : '' }}>Review</option>
+                                            <option value="ditolak" {{ $question->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                            <option value="diterima" {{ $question->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                                        </select>
+                                    @else
+                                        <span class="badge badge-{{ $question->status === 'diterima' ? 'success' : ($question->status === 'ditolak' ? 'danger' : 'secondary') }}">
+                                            {{ ucfirst($question->status) }}
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button wire:click="show({{ $question->id }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#showModal">
                                         <i class="fas fa-eye"></i>
@@ -143,6 +155,20 @@
                     Swal.fire({
                         title: "Sukses!",
                         text: "Data berhasil ditambahkan",
+                        icon: "success"
+                    });
+                });
+            </script>
+        @endscript
+        {{-- Close Create Modal --}}
+
+        {{-- Close Create Modal --}}
+        @script
+            <script>
+                $wire.on('updateStatus', () => {
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: "Status berhasil diubah",
                         icon: "success"
                     });
                 });
