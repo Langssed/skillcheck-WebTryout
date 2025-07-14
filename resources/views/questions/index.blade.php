@@ -8,6 +8,7 @@
   {{-- Tailwind --}}
   @vite('resources/css/app.css')
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Question</title>
   <style>
     .animate-fade-in {
@@ -26,9 +27,14 @@
   </style>
 </head>
 <body class="bg-teal-50">
-  <section id="question" class="flex w-full h-[100vh] justify-center items-center">
+  <section id="question" class="relative flex w-full h-[100vh] justify-center items-center">
+    <div class="absolute top-5 right-5 z-50 bg-white shadow px-4 py-2 rounded-full flex items-center gap-2 text-red-600 font-semibold">
+      <i data-feather="clock" class="w-5 h-5"></i>
+      <span id="timer-display">--:--</span>
+    </div>
+
+    <!-- KONTEN SOAL -->
     <div class="md:w-1/2 w-4/5" id="question-content">
-      {{-- Ada di Script --}}
     </div>
   </section>
 
@@ -39,6 +45,67 @@
     let answers = new Array(questions.length).fill(null);
     let correctAnswers = new Array(questions.length).fill(null);
     const questionContent = document.getElementById('question-content');
+    // Ambil waktu dari backend (menit)
+    const totalMinutes = @json($time ?? 60);
+    const totalSeconds = totalMinutes * 60;
+
+    const TEST_KEY = `start_time_subject_{{ $subject->id }}`;
+    let remainingTime = totalSeconds;
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function getStartTime() {
+      localStorage.removeItem(TEST_KEY);
+      const saved = localStorage.getItem(TEST_KEY);
+      if (saved) {
+        return parseInt(saved);
+      }
+
+      const now = Math.floor(Date.now() / 1000);
+      localStorage.setItem(TEST_KEY, now);
+      return now;
+    }
+
+    function startCountdown() {
+      const timerDisplay = document.getElementById("timer-display");
+
+      const startTime = getStartTime();
+      const now = Math.floor(Date.now() / 1000);
+      const elapsed = now - startTime;
+
+      // remainingTime = totalSeconds - elapsed;
+      remainingTime = Math.max(totalSeconds - elapsed, 0);
+
+
+      if (remainingTime <= 0) {
+        window.onbeforeunload = null;
+        submitQuestion();
+        return;
+      }
+
+      if (timerDisplay) {
+        timerDisplay.textContent = formatTime(remainingTime);
+      }
+
+      timerInterval = setInterval(() => {
+        remainingTime--;
+
+        if (timerDisplay) {
+          timerDisplay.textContent = formatTime(remainingTime);
+        }
+
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          window.onbeforeunload = null;
+          submitQuestion();
+        }
+      }, 1000);
+    }
 
     function renderQuestion(index) {
       const q = questions[index];
@@ -53,16 +120,19 @@
 
           <!-- Top Bar -->
           <div class="w-full mt-6">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
               <p class="text-slate-700 md:text-base text-sm">${index + 1} dari ${questions.length}</p>
 
-              <div class="relative group flex items-center gap-1 cursor-pointer text-red-700 font-semibold text-sm md:text-base" id="score-rules">
-                <span>Aturan Score</span>
-                <i data-feather="info" class="w-4 h-4"></i>
-                <div id="score-container" class="absolute top-full right-0 mt-2 z-10 hidden group-hover:flex flex-col bg-red-50 border border-red-800 text-sm rounded-xl shadow px-4 py-3 w-52 transition-all duration-200">
-                  <p class="text-red-800 font-medium">✅ Benar = +1</p>
-                  <p class="text-red-800 font-medium">❌ Salah = 0</p>
-                  <p class="text-red-800 font-medium">⛔ Tidak Jawab = -1</p>
+              <div class="flex items-center gap-4">
+                <!-- Score Rules -->
+                <div class="relative group flex items-center gap-1 cursor-pointer text-red-700 font-semibold text-sm md:text-base" id="score-rules">
+                  <span>Aturan Score</span>
+                  <i data-feather="info" class="w-4 h-4"></i>
+                  <div id="score-container" class="absolute top-full right-0 mt-2 z-10 hidden group-hover:flex flex-col bg-red-50 border border-red-800 text-sm rounded-xl shadow px-4 py-3 w-52 transition-all duration-200">
+                    <p class="text-red-800 font-medium">✅ Benar = +1</p>
+                    <p class="text-red-800 font-medium">❌ Salah = 0</p>
+                    <p class="text-red-800 font-medium">⛔ Tidak Jawab = -1</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -98,7 +168,7 @@
               <i data-feather="arrow-right" class="w-4 h-4"></i>
             </button>
 
-            <button id="submit-btn" onclick="submitQuestion()" class="hidden flex items-center gap-1 bg-slate-800 text-teal-400 font-medium px-4 py-2 rounded-full hover:bg-slate-700 transition">
+            <button id="submit-btn" onclick="confirmSubmit()" class="hidden flex items-center gap-1 bg-slate-800 text-teal-400 font-medium px-4 py-2 rounded-full hover:bg-slate-700 transition">
               <span class="text-sm md:text-base">Selesai</span>
               <i data-feather="check-circle" class="w-4 h-4"></i>
             </button>
@@ -106,7 +176,7 @@
         </div>
       `;
 
-      // Toggle tombol
+      // Navigasi
       const prevBtn = document.getElementById('prev-btn');
       const nextBtn = document.getElementById('next-btn');
       const submitBtn = document.getElementById('submit-btn');
@@ -115,7 +185,7 @@
       nextBtn.classList.toggle('hidden', currentIndex === questions.length - 1);
       submitBtn.classList.toggle('hidden', currentIndex !== questions.length - 1);
 
-      // Handle pilihan jawaban
+      // Jawaban
       const options = [...document.querySelectorAll('.option')];
       const savedAnswer = answers[currentIndex];
       if (savedAnswer) {
@@ -128,17 +198,14 @@
 
       options.forEach((opt, i) => {
         opt.addEventListener('click', () => {
-          // Reset semua
           options.forEach(el => {
             el.classList.remove('bg-teal-500', 'text-white');
             el.classList.add('bg-slate-100', 'text-slate-800');
           });
 
-          // Tambah style ke yang dipilih
           opt.classList.remove('bg-slate-100', 'text-slate-800');
           opt.classList.add('bg-teal-500', 'text-white');
 
-          // Simpan jawaban
           answers[currentIndex] = ['A', 'B', 'C', 'D'][i];
           correctAnswers[currentIndex] = (answers[currentIndex] === q.correct_answer) ? 'BENAR' : 'SALAH';
         });
@@ -146,6 +213,30 @@
 
       feather.replace();
       initScoreToggle();
+    }
+
+    // Panggil saat load awal
+    renderQuestion(currentIndex);
+    startCountdown();
+
+    // Cegah keluar sebelum submit
+    window.onbeforeunload = null;
+    function confirmSubmit() {
+      Swal.fire({
+        title: 'Yakin ingin menyelesaikan?',
+        text: "Pastikan semua soal sudah dijawab.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: 'Ya, Selesai!',
+        cancelButtonText: 'Belum'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.onbeforeunload = null;
+          submitQuestion();
+        }
+      });
     }
 
     function showScore(score, persentageScore, correct, wrong, nul, total) {
@@ -276,38 +367,51 @@
     }
 
     function submitQuestion() {
-      let score = 0;
-      let persentageScore = 0;
-      let correct = 0;
-      let wrong = 0;
-      let nul = 0;
-      let total = 0;
-      correctAnswers.map(answer => {
-        total += 1;
-        if(answer === 'BENAR'){
-          score += 1;
-          correct += 1;
-        } else{
-          if(!answer){
-            score -= 1;
-            nul += 1;
-          } else{
-            wrong += 1;
-          }
-        }
-      })
-
-      persentageScore = (score / total) * 100;
-      persentageScore = persentageScore.toFixed(2);
-
-      if(persentageScore < 0){
-        persentageScore = 0;
-      }
-
-      storeHistory(score, persentageScore, correct, total);
-      showScore(score, persentageScore, correct, wrong, nul, total);
-
+    // Hentikan timer jika masih berjalan
+    if (timerInterval) {
+      clearInterval(timerInterval);
     }
+
+    // Sembunyikan tampilan timer di pojok atas
+    const timerWrapper = document.getElementById('timer-display');
+    if (timerWrapper) {
+      timerWrapper.parentElement.style.display = 'none';
+    }
+
+    localStorage.removeItem(TEST_KEY);
+
+    let score = 0;
+    let persentageScore = 0;
+    let correct = 0;
+    let wrong = 0;
+    let nul = 0;
+    let total = 0;
+    
+    correctAnswers.map(answer => {
+      total += 1;
+      if(answer === 'BENAR'){
+        score += 1;
+        correct += 1;
+      } else{
+        if(!answer){
+          score -= 1;
+          nul += 1;
+        } else{
+          wrong += 1;
+        }
+      }
+    });
+
+    persentageScore = (score / total) * 100;
+    persentageScore = persentageScore.toFixed(2);
+
+    if(persentageScore < 0){
+      persentageScore = 0;
+    }
+
+    storeHistory(score, persentageScore, correct, total);
+    showScore(score, persentageScore, correct, wrong, nul, total);
+  }
 
     function storeHistory(score, persentageScore, correct, total){
       const CURRENT_USER_ID = {{ Auth::user()->id }};

@@ -29,7 +29,8 @@
                         '{{ $subject->name }}', 
                         '{{ $level->slug }}', 
                         '{{ $subject->slug }}', 
-                        {{ $subject->questions()->where('level_id', $level->id)->where('status', 'diterima')->count() }}
+                        {{ $subject->questions()->where('level_id', $level->id)->where('status', 'diterima')->count() }},
+                        '{{ $subject->time }}'
                       )"
                       class="cursor-pointer bg-white shadow-md rounded-xl p-5 border hover:shadow-lg transition-all duration-200 hover:border-teal-500 group"
                     >
@@ -77,6 +78,7 @@
               <p><i data-feather="book-open" class="inline w-4 h-4 mr-1 text-gray-500"></i><strong>Tingkat:</strong> <span id="modalLevelName"></span></p>
               <p><i data-feather="book" class="inline w-4 h-4 mr-1 text-gray-500"></i><strong>Mapel:</strong> <span id="modalSubjectName"></span></p>
               <p><i data-feather="file-text" class="inline w-4 h-4 mr-1 text-gray-500"></i><strong>Jumlah Soal:</strong> <span id="modalQuestionCount"></span></p>
+              <p><i data-feather="clock" class="inline w-4 h-4 mr-1 mb-1 text-gray-500"></i><strong>Waktu:</strong> <span id="modalQuestionTime"></span></p>
             </div>
 
             <div class="flex justify-end mt-6 gap-3">
@@ -92,7 +94,7 @@
 
             <!-- Feather & Style -->
             <script>
-              function openConfirmationModal(levelName, subjectName, levelSlug, subjectSlug, questionCount) {
+              function openConfirmationModal(levelName, subjectName, levelSlug, subjectSlug, questionCount, questionTime) {
                 if (questionCount === 0) {
                   alert('Belum ada soal tersedia untuk mapel ini.');
                   return;
@@ -101,6 +103,7 @@
                 document.getElementById('modalLevelName').textContent = levelName;
                 document.getElementById('modalSubjectName').textContent = subjectName;
                 document.getElementById('modalQuestionCount').textContent = questionCount + ' soal';
+                document.getElementById('modalQuestionTime').textContent = questionTime + ' menit';
 
                 const goLink = `/question/${levelSlug}/${subjectSlug}`;
                 document.getElementById('modalGoButton').href = goLink;
@@ -132,7 +135,7 @@
             </style>
 
             <script>
-              function openConfirmationModal(levelName, subjectName, levelSlug, subjectSlug, questionCount) {
+              function openConfirmationModal(levelName, subjectName, levelSlug, subjectSlug, questionCount, questionTime) {
                 if (questionCount === 0) {
                   Swal.fire({
                     icon: 'warning',
@@ -147,6 +150,7 @@
                 document.getElementById('modalLevelName').textContent = levelName;
                 document.getElementById('modalSubjectName').textContent = subjectName;
                 document.getElementById('modalQuestionCount').textContent = `${questionCount} soal`;
+                document.getElementById('modalQuestionTime').textContent = `${questionTime} menit`;
 
                 const goLink = `/question/${levelSlug}/${subjectSlug}`;
                 document.getElementById('modalGoButton').href = goLink;

@@ -12,15 +12,18 @@ class SubjectController extends Controller
     public function index(Level $level, Subject $subject){
         
         $questions = Question::where('level_id', $level->id)
-        ->where('subject_id', $subject->id)
-        ->where('status', 'diterima')
-        ->with(['level', 'category', 'subject'])
-        ->get();
+            ->where('subject_id', $subject->id)
+            ->where('status', 'diterima')
+            ->with(['level', 'category', 'subject'])
+            ->get();
+
+        $time = $subject->time;
 
         return view('questions.index', [
             'level' => $level,
             'subject' => $subject,
-            'questions' => $questions
+            'questions' => $questions,
+            'time' => $time
         ]);
     }
 }

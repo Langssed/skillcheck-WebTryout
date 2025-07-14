@@ -59,6 +59,7 @@
                             <th>ID</th>
                             <th>Tingkat</th>
                             <th>Nama</th>
+                            <th>Waktu(menit)</th>
                             <th>
                                 <i class="fas fa-cog"></i>
                             </th>
@@ -69,6 +70,7 @@
                                 <td>{{ $subject->id }}</td>
                                 <td>{{ $subject->level->name }}</td>
                                 <td>{{ $subject->name }}</td>
+                                <td>{{ $subject->time }}</td>
                                 <td>
                                     @if (session('active_role') !== 'teacher')
                                         <button wire:click="edit({{ $subject->id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal">

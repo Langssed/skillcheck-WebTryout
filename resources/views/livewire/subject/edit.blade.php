@@ -31,6 +31,15 @@
                 <label for="slug" class="form-label">Slug<span class="text-danger">*</span></label>
                 <input type="text" wire:model="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" placeholder="Masukkan slug">
                 @error('slug')
+                <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="row">
+                <label for="time" class="form-label">Waktu(menit)<span class="text-danger">*</span></label>
+                <input type="number" wire:model="time" id="time" 
+                    class="form-control @error('time') is-invalid @enderror" 
+                    placeholder="Masukkan Waktu (dalam menit)">
+                @error('time')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>

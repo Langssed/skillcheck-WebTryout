@@ -10,27 +10,37 @@
         <div class="modal-body">
             <div class="row">
                 <label for="level" class="form-label">Level<span class="text-danger">*</span></label>
-                <select wire:model="level_id" id="level" class="form-control @error('level') is-invalid @enderror">
+                <select wire:model="level_id" id="level" class="form-control @error('level_id') is-invalid @enderror">
                     <option value="">-- Pilih Tingkat --</option>
                     @foreach ($levels as $level)
                         <option value="{{ $level->id }}">{{ $level->name }}</option>
                     @endforeach
                 </select>
-                @error('level')
+                @error('level_id')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+
             <div class="row">
                 <label for="name" class="form-label">Nama<span class="text-danger">*</span></label>
-                <input type="text" wire:model="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukkan name">
+                <input type="text" wire:model="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukkan nama">
                 @error('name')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+
             <div class="row">
                 <label for="slug" class="form-label">Slug<span class="text-danger">*</span></label>
                 <input type="text" wire:model="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" placeholder="Masukkan slug">
                 @error('slug')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="row">
+                <label for="time" class="form-label">Waktu(menit)<span class="text-danger">*</span></label>
+                <input type="number" wire:model="time" id="time" class="form-control @error('time') is-invalid @enderror" placeholder="Masukkan waktu (menit)">
+                @error('time')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
