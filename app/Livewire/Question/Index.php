@@ -43,6 +43,7 @@ class Index extends Component
             'categories' => Category::all(),
             'questions' => $question->filter($this->search)
                                 ->orderBy('status', 'desc')
+                                ->oldest()
                                 ->paginate($this->paginate),
         ];
 
