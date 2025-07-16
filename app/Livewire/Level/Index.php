@@ -20,7 +20,7 @@ class Index extends Component
     public function create(){
         $this->resetValidation();
         $this->reset([
-            'name'
+            'name', 'slug'
         ]);
     }
 

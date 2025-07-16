@@ -31,8 +31,8 @@ class Question extends Model
                 ->orWhereHas('subject', function($q3) use ($search){
                     $q3->where('name', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('level', function($q3) use ($search){
-                    $q3->where('name', 'like', '%' . $search . '%');
+                ->orWhereHas('level', function($q4) use ($search){
+                    $q4->where('name', 'like', '%' . $search . '%');
                 });
         });
     }

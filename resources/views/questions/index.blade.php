@@ -60,7 +60,6 @@
     }
 
     function getStartTime() {
-      localStorage.removeItem(TEST_KEY);
       const saved = localStorage.getItem(TEST_KEY);
       if (saved) {
         return parseInt(saved);
@@ -294,8 +293,8 @@
       `;
 
       questions.forEach((q, index) => {
-        const userAnswer = answers[index];
-        const correctAnswer = q.correct_answer;
+        const userAnswer = answers[index]; // e.g., 'A', 'B', etc.
+        const correctAnswer = q.correct_answer; // e.g., 'B'
         const isCorrect = userAnswer === correctAnswer;
 
         const statusIcon = isCorrect
@@ -305,6 +304,17 @@
         const colorClass = isCorrect
           ? 'border-green-500 bg-green-50'
           : 'border-red-500 bg-red-50';
+
+        // Buat objek options manual dari kolom option_a, option_b, ...
+        const options = {
+          A: q.option_a,
+          B: q.option_b,
+          C: q.option_c,
+          D: q.option_d,
+        };
+
+        const userAnswerText = userAnswer ? options[userAnswer] : 'Tidak Dijawab';
+        const correctAnswerText = options[correctAnswer];
 
         const html = `
           <div class="mb-8 border-l-4 ${colorClass} px-5 py-4 rounded-xl shadow-md">
@@ -318,13 +328,13 @@
               <p>
                 <span class="font-semibold text-slate-800">Jawaban Anda:</span>
                 <span class="inline-block px-2 py-1 rounded-full font-bold ${isCorrect ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}">
-                  ${userAnswer ?? 'Tidak Dijawab'}
+                  ${userAnswerText}
                 </span>
               </p>
               <p>
                 <span class="font-semibold text-slate-800">Jawaban Benar:</span>
                 <span class="inline-block px-2 py-1 rounded-full bg-green-200 text-green-700 font-bold">
-                  ${correctAnswer}
+                  ${correctAnswerText}
                 </span>
               </p>
             </div>
@@ -351,6 +361,7 @@
 
       feather.replace();
     }
+
 
     function previousQuestion() {
       if (currentIndex > 0) {
