@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-2 col-6">
+                <div class="d-flex justify-content-between mb-2">
                     <div class="col-2">
                         <select wire:model.live="paginate" id="paginate" class="form-control">
                             <option value="10">10</option>
@@ -44,7 +44,7 @@
                             <option value="100">100</option>
                         </select>
                     </div>
-                    <div class="col-6"><div class="input-group mb-3">
+                    <div class="col-4"><div class="input-group mb-3">
                         <input wire:model.live="search"  type="text" class="form-control" placeholder="Pencarian...">
                         <div class="input-group-append">
                             <button wire:click="resetSearch" class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-times"></i></button>
