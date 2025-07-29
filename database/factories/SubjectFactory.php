@@ -21,6 +21,7 @@ class SubjectFactory extends Factory
         return [
             'level_id' => Level::inRandomOrder()->first()->id,
             'name' => fake()->unique()->sentence(1),
+            'time' => 5,
             'slug' => Str::slug(fake()->unique()->words(2, true))
         ];
     }
