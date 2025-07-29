@@ -14,7 +14,7 @@ class Index extends Component
     public $paginate = "10";
     public $search = "";
 
-    public $subject_id, $name, $slug, $category_id;
+    public $subject_id, $name, $category_id;
 
     public function render()
     {
@@ -41,16 +41,11 @@ class Index extends Component
         $validate = $this->validate([
             'subject_id' => 'required',
             'name' => 'required|min:2|max:16',
-            'slug' => 'required|min:2|max:16|unique:categories,slug'
         ],[
             'subject.required' => 'Tingkat tidak boleh kosong',
             'name.required' => 'Nama tidak boleh kosong',
             'name.min' => 'Nama tidak boleh kurang dari 2 karakter',
             'name.max' => 'Nama tidak boleh lebih dari 16 karakter',
-            'slug.required' => 'Slug tidak boleh kosong',
-            'slug.min' => 'Slug tidak boleh kurang dari 2 karakter',
-            'slug.max' => 'Slug tidak boleh lebih dari 16 karakter',
-            'slug.unique' => 'Slug sudah ada',
         ]);
 
         Category::create($validate);
@@ -64,7 +59,6 @@ class Index extends Component
         
         $this->subject_id = $category->subject_id;
         $this->name = $category->name;
-        $this->slug = $category->slug;
         $this->category_id = $category->id;
     }
 
@@ -72,16 +66,11 @@ class Index extends Component
         $validate = $this->validate([
             'subject_id' => 'required',
             'name' => 'required|min:2|max:16',
-            'slug' => 'required|min:2|max:16|unique:categories,slug,' . $id
         ],[
             'subject.required' => 'Tingkat tidak boleh kosong',
             'name.required' => 'Nama tidak boleh kosong',
             'name.min' => 'Nama tidak boleh kurang dari 2 karakter',
             'name.max' => 'Nama tidak boleh lebih dari 16 karakter',
-            'slug.required' => 'Slug tidak boleh kosong',
-            'slug.min' => 'Slug tidak boleh kurang dari 2 karakter',
-            'slug.max' => 'Slug tidak boleh lebih dari 16 karakter',
-            'slug.unique' => 'Slug sudah ada',
         ]);
 
         $category = Category::findOrFail($id);

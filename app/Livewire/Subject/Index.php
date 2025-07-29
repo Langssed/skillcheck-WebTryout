@@ -14,7 +14,7 @@ class Index extends Component
     public $paginate = "10";
     public $search = "";
 
-    public $level_id, $name, $slug, $subject_id;
+    public $level_id, $name, $slug, $subject_id, $time;
     public function render()
     {
         $data = array(
@@ -32,7 +32,7 @@ class Index extends Component
     public function create(){
         $this->resetValidation();
         $this->reset([
-            'level_id','name', 'slug',
+            'level_id','name', 'slug', 'time'
         ]);
     }
 
@@ -40,16 +40,24 @@ class Index extends Component
         $validate = $this->validate([
             'level_id' => 'required',
             'name' => 'required|min:2|max:32',
-            'slug' => 'required|min:2|max:32|unique:subjects,slug'
-        ],[
-            'level.required' => 'Tingkat tidak boleh kosong',
+            'slug' => 'required|min:2|max:32|unique:subjects,slug',
+            'time' => 'required|integer|min:1|max:300'
+        ], [
+            'level_id.required' => 'Tingkat tidak boleh kosong',
+
             'name.required' => 'Nama tidak boleh kosong',
             'name.min' => 'Nama tidak boleh kurang dari 2 karakter',
             'name.max' => 'Nama tidak boleh lebih dari 32 karakter',
+
             'slug.required' => 'Slug tidak boleh kosong',
             'slug.min' => 'Slug tidak boleh kurang dari 2 karakter',
             'slug.max' => 'Slug tidak boleh lebih dari 32 karakter',
             'slug.unique' => 'Slug sudah ada',
+
+            'time.required' => 'Waktu tidak boleh kosong',
+            'time.integer' => 'Waktu harus berupa angka',
+            'time.min' => 'Waktu minimal 1 menit',
+            'time.max' => 'Waktu tidak boleh lebih dari 300 menit',
         ]);
 
         Subject::create($validate);
@@ -64,6 +72,7 @@ class Index extends Component
         $this->level_id = $subject->level_id;
         $this->name = $subject->name;
         $this->slug = $subject->slug;
+        $this->time = $subject->time;
         $this->subject_id = $subject->id;
     }
 
@@ -71,16 +80,24 @@ class Index extends Component
         $validate = $this->validate([
             'level_id' => 'required',
             'name' => 'required|min:2|max:32',
-            'slug' => 'required|min:2|max:32|unique:subjects,slug,' . $id
-        ],[
-            'level.required' => 'Tingkat tidak boleh kosong',
+            'slug' => 'required|min:2|max:32|unique:subjects,slug,' . $id,
+            'time' => 'required|integer|min:1|max:300'
+        ], [
+            'level_id.required' => 'Tingkat tidak boleh kosong',
+
             'name.required' => 'Nama tidak boleh kosong',
             'name.min' => 'Nama tidak boleh kurang dari 2 karakter',
             'name.max' => 'Nama tidak boleh lebih dari 32 karakter',
+
             'slug.required' => 'Slug tidak boleh kosong',
             'slug.min' => 'Slug tidak boleh kurang dari 2 karakter',
             'slug.max' => 'Slug tidak boleh lebih dari 32 karakter',
             'slug.unique' => 'Slug sudah ada',
+
+            'time.required' => 'Waktu tidak boleh kosong',
+            'time.integer' => 'Waktu harus berupa angka',
+            'time.min' => 'Waktu minimal 1 menit',
+            'time.max' => 'Waktu tidak boleh lebih dari 300 menit',
         ]);
 
         $subject = Subject::findOrFail($id);

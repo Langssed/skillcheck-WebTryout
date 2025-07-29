@@ -28,7 +28,9 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus mr-1"></i>Tambah Data</button>
+                        @if (session('active_role') !== 'teacher')
+                            <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus mr-1"></i>Tambah Data</button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -50,10 +52,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive col-6">
+                <div class="table-responsive">
                     <table class="table table-hover">
                         <tr class="bg-secondary">
                             <th>No</th>
+                            <th>ID</th>
                             <th>Mapel</th>
                             <th>Nama</th>
                             <th>
@@ -63,15 +66,18 @@
                         @foreach ($categories as $category)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $category->id }}</td>
                                 <td>{{ $category->subject->name }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>
-                                    <button wire:click="edit({{ $category->id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button wire:click="confirm({{ $category->id }})" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    @if (session('active_role') !== 'teacher')
+                                        <button wire:click="edit({{ $category->id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button wire:click="confirm({{ $category->id }})" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

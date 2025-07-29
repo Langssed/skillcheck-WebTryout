@@ -86,7 +86,7 @@ class Index extends Component
             'email' => 'required|email|unique:users,email,' . $id,
             'school' => 'required|min:4|max:64',
             'password' => 'nullable|min:8|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ], [
             'name.required' => 'Nama tidak boleh kosong',
             'name.min' => 'Nama tidak boleh kurang dari 4 karakter',
@@ -100,7 +100,7 @@ class Index extends Component
             'password.min' => 'Password tidak boleh kurang dari 8 karakter',
             'password.confirmed' => 'Password tidak sama',
             'profile_photo.image' => 'File harus berupa gambar',
-            'profile_photo.max' => 'Ukuran foto maksimal 2MB',
+            'profile_photo.max' => 'Ukuran foto maksimal 5MB',
             'profile_photo.mimes' => 'Format gambar harus jpg, jpeg, png, atau webp',
         ]);
 

@@ -27,29 +27,24 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <!-- Tombol Tambah Data -->
                     <div>
                         <button wire:click="create" class="btn btn-md btn-primary" data-toggle="modal" data-target="#createModal">
                             <i class="fas fa-plus mr-1"></i>Tambah Data
                         </button>
                     </div>
 
-                    <!-- Form Import Soal: [Download] [Input File] [Import] -->
-                    <form wire:submit.prevent="importQuestions" class="d-flex align-items-center gap-2">
+                    <form wire:submit.prevent="importQuestions" class="d-flex align-items-center gap-2 mt-2">
                         <label for="file" class="mb-0 mr-2 font-weight-bold">Import Soal:</label>
 
-                        <!-- Button download template -->
                         <a href="{{ asset('tamplate/template_soal.xlsx') }}" class="btn btn-sm btn-success" download>
                             <i class="fas fa-download mr-1"></i>Template
                         </a>
 
-                        <!-- Input file -->
                         <input type="file" wire:model="file" class="form-control form-control-sm" id="file" accept=".xlsx,.xls" style="width: 200px;">
                         @error('file')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
 
-                        <!-- Button import -->
                         <button type="submit" class="btn btn-sm btn-warning">
                             <i class="fas fa-file-import mr-1"></i>Import
                         </button>
@@ -82,7 +77,7 @@
                             <th>Mapel</th>
                             <th>Kategori</th>
                             <th>Soal</th>
-                            {{-- <th>Jawaban</th> --}}
+                            <th>Status</th>
                             <th>
                                 <i class="fas fa-cog"></i>
                             </th>
@@ -94,7 +89,19 @@
                                 <td>{{ $question->subject->name }}</td>
                                 <td>{{ $question->category->name }}</td>
                                 <td class="text-truncate" style="max-width: 200px;">{{ $question->content }}</td>
-                                {{-- <td>{{ $question->correct_answer }}</td> --}}
+                                <td>
+                                    @if (session('active_role') === 'super admin' || session('active_role') === 'admin')
+                                        <select wire:change="updateStatus({{ $question->id }}, $event.target.value)" class="form-control form-control-sm">
+                                            <option value="review" {{ $question->status == 'review' ? 'selected' : '' }}>Review</option>
+                                            <option value="ditolak" {{ $question->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                            <option value="diterima" {{ $question->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                                        </select>
+                                    @else
+                                        <span class="badge badge-{{ $question->status === 'diterima' ? 'success' : ($question->status === 'ditolak' ? 'danger' : 'secondary') }}">
+                                            {{ ucfirst($question->status) }}
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button wire:click="show({{ $question->id }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#showModal">
                                         <i class="fas fa-eye"></i>
@@ -150,6 +157,22 @@
         @endscript
         {{-- Close Create Modal --}}
 
+        {{-- Update Status Modal --}}
+        @script
+            <script>
+                $wire.on('updateStatus', () => {
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: "Status berhasil diubah",
+                        icon: "success"
+                    }).then(() => {
+                        window.location.reload(); // reload setelah klik OK
+                    });
+                });
+            </script>
+        @endscript
+        {{-- Update Status Modal --}}
+
         {{-- Edit Modal --}}
         @include('livewire.question.edit')
         {{-- Edit Modal --}}
@@ -195,4 +218,6 @@
         {{-- Show Modal --}}
     </div>
     <!-- /.content-wrapper -->
+
+    @include('livewire.question.script')
 </div>

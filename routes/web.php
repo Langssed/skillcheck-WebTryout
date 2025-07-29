@@ -43,6 +43,14 @@ Route::middleware('auth', 'has_role')->group(function () {
     Route::post('/choose-role', [ChooseRoleController::class, 'store'])->name('choose.role.store');
 });
 
+Route::get('/api/subjects/{level_id}', function ($level_id) {
+    return \App\Models\Subject::where('level_id', $level_id)->get();
+});
+
+Route::get('/api/categories/{subject_id}', function ($subject_id) {
+    return \App\Models\Category::where('subject_id', $subject_id)->get();
+});
+
 
 // Dashboard
 Route::middleware(['auth'])->group(function () {

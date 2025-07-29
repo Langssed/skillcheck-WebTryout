@@ -24,7 +24,6 @@ class HistoryController extends Controller
 
         $history = History::create($data);
 
-        // Generate PDF Sertifikat
         $pdf = Pdf::loadView('certificates.template', [
             'history' => $history,
             'user' => $history->user,
@@ -32,11 +31,9 @@ class HistoryController extends Controller
             'level' => $history->level,
         ])->setPaper('A4', 'landscape');
 
-        // Simpan ke storage
         $filename = 'certificates/sertifikat-' . $history->id . '.pdf';
         Storage::disk('public')->put($filename, $pdf->output());
 
-        // Update URL ke database
         $history->update([
             'certificate_url' => $filename,
         ]);

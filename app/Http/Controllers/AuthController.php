@@ -18,6 +18,25 @@ class AuthController extends Controller
             'school' => 'required|min:4|max:64',
             'password' => 'required|min:8|max:32|confirmed',
             'password_confirmation' => 'required'
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'name.min' => 'Nama minimal terdiri dari 3 karakter.',
+            'name.max' => 'Nama maksimal terdiri dari 32 karakter.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+
+            'school.required' => 'Nama sekolah wajib diisi.',
+            'school.min' => 'Nama sekolah minimal 4 karakter.',
+            'school.max' => 'Nama sekolah maksimal 64 karakter.',
+
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 8 karakter.',
+            'password.max' => 'Kata sandi maksimal 32 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+
+            'password_confirmation.required' => 'Konfirmasi kata sandi wajib diisi.',
         ]);
 
         $validate['password'] = Hash::make($validate['password']);
@@ -26,7 +45,7 @@ class AuthController extends Controller
 
         $user->assignRole('user');
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Successfully registered account');
     }
 
     public function login(Request $request){

@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ asset('img/logoSK.png') }}" type="image/x-icon">
     {{-- Tailwind --}}
     @vite('resources/css/app.css')
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
+    {{-- Sweetalert --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Skill Check</title>
@@ -23,8 +26,9 @@
     {{-- Footer --}}
     @include('partials.footer')
 
-    <!-- Javascript -->
-    <script src="{{ asset('js/script.js') }}"></script>
+    {{-- Sweetalert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Feather Icon -->
     <script>

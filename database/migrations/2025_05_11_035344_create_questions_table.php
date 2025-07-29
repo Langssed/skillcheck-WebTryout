@@ -16,12 +16,14 @@ return new class extends Migration
             $table->foreignId('level_id')->constrained()->onDelete('cascade');
             $table->foreignId('subject_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('content');
             $table->string('option_a');
             $table->string('option_b');
             $table->string('option_c');
             $table->string('option_d');
             $table->enum('correct_answer', ['A', 'B', 'C', 'D']);
+            $table->enum('status', ['review', 'ditolak', 'diterima'])->default('review');
             $table->timestamps();
         });
     }

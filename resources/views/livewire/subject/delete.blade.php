@@ -20,6 +20,12 @@
                 </div>
                 <div class="col-6"> : {{ $name }}</div>
             </div>
+            <div class="row">
+                <div class="col-2">
+                    Waktu
+                </div>
+                <div class="col-6"> : {{ $time }}</div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Tutup</button>
