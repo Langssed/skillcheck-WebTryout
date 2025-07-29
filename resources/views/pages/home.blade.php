@@ -106,6 +106,16 @@
                 Antarmuka clean, ringan, dan ramah pengguna di semua perangkat.
               </p>
             </div>
+
+            <div class="w-full md:w-1/4 sm:w-1/2 flex flex-col items-center text-center" style="animation: fadeIn 0.7s ease-in;">
+              <div class="bg-teal-500 p-4 rounded-2xl shadow-lg">
+                <i data-feather="award" class="w-10 h-10 text-white"></i>
+              </div>
+              <h4 class="mt-5 text-xl font-semibold text-white">Sertifikat Otomatis</h4>
+              <p class="mt-2 text-sm text-white w-4/5">
+                Dapatkan sertifikat secara otomatis setelah menyelesaikan tryout.
+              </p>
+            </div>
           </div>
         </div>
       </section>

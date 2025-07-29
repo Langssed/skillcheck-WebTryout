@@ -41,6 +41,16 @@
   <script>
     const questions = @json($questions);
 
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Acak soal
+    shuffleArray(questions);
+
     let currentIndex = 0;
     let answers = new Array(questions.length).fill(null);
     let correctAnswers = new Array(questions.length).fill(null);
@@ -276,7 +286,6 @@
 
       feather.replace();
 
-      // Event: saat tombol evaluasi diklik
       document.getElementById('btn-evaluation').addEventListener('click', () => {
         renderEvaluation();
       });
@@ -293,8 +302,8 @@
       `;
 
       questions.forEach((q, index) => {
-        const userAnswer = answers[index]; // e.g., 'A', 'B', etc.
-        const correctAnswer = q.correct_answer; // e.g., 'B'
+        const userAnswer = answers[index];
+        const correctAnswer = q.correct_answer;
         const isCorrect = userAnswer === correctAnswer;
 
         const statusIcon = isCorrect
@@ -305,7 +314,6 @@
           ? 'border-green-500 bg-green-50'
           : 'border-red-500 bg-red-50';
 
-        // Buat objek options manual dari kolom option_a, option_b, ...
         const options = {
           A: q.option_a,
           B: q.option_b,
@@ -378,51 +386,51 @@
     }
 
     function submitQuestion() {
-    // Hentikan timer jika masih berjalan
-    if (timerInterval) {
-      clearInterval(timerInterval);
-    }
-
-    // Sembunyikan tampilan timer di pojok atas
-    const timerWrapper = document.getElementById('timer-display');
-    if (timerWrapper) {
-      timerWrapper.parentElement.style.display = 'none';
-    }
-
-    localStorage.removeItem(TEST_KEY);
-
-    let score = 0;
-    let persentageScore = 0;
-    let correct = 0;
-    let wrong = 0;
-    let nul = 0;
-    let total = 0;
-    
-    correctAnswers.map(answer => {
-      total += 1;
-      if(answer === 'BENAR'){
-        score += 1;
-        correct += 1;
-      } else{
-        if(!answer){
-          score -= 1;
-          nul += 1;
-        } else{
-          wrong += 1;
-        }
+      // Hentikan timer jika masih berjalan
+      if (timerInterval) {
+        clearInterval(timerInterval);
       }
-    });
 
-    persentageScore = (score / total) * 100;
-    persentageScore = persentageScore.toFixed(2);
+      // Sembunyikan tampilan timer di pojok atas
+      const timerWrapper = document.getElementById('timer-display');
+      if (timerWrapper) {
+        timerWrapper.parentElement.style.display = 'none';
+      }
 
-    if(persentageScore < 0){
-      persentageScore = 0;
+      localStorage.removeItem(TEST_KEY);
+
+      let score = 0;
+      let persentageScore = 0;
+      let correct = 0;
+      let wrong = 0;
+      let nul = 0;
+      let total = 0;
+      
+      correctAnswers.map(answer => {
+        total += 1;
+        if(answer === 'BENAR'){
+          score += 1;
+          correct += 1;
+        } else{
+          if(!answer){
+            score -= 1;
+            nul += 1;
+          } else{
+            wrong += 1;
+          }
+        }
+      });
+
+      persentageScore = (score / total) * 100;
+      persentageScore = persentageScore.toFixed(2);
+
+      if(persentageScore < 0){
+        persentageScore = 0;
+      }
+
+      storeHistory(score, persentageScore, correct, total);
+      showScore(score, persentageScore, correct, wrong, nul, total);
     }
-
-    storeHistory(score, persentageScore, correct, total);
-    showScore(score, persentageScore, correct, wrong, nul, total);
-  }
 
     function storeHistory(score, persentageScore, correct, total){
       const CURRENT_USER_ID = {{ Auth::user()->id }};

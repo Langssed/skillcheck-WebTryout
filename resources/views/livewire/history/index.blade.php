@@ -28,44 +28,46 @@
         <h3 class="card-title">Riwayat Pengerjaan</h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tingkat</th>
-                            <th>Mata Pelajaran</th>
-                            <th>Total Soal</th>
-                            {{-- <th>Jawaban Benar</th> --}}
-                            <th>Skor</th>
-                            <th>Persentase</th>
-                            <th>Sertifikat</th>
-                            <th>Tanggal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($histories as $index => $history)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $history->level->name }}</td>
-                            <td>{{ $history->subject->name }}</td>
-                            <td>{{ $history->total_questions }}</td>
-                            {{-- <td>{{ $history->correct_answer }}</td> --}}
-                            <td>{{ $history->score }}</td>
-                            <td>{{ $history->persentage_score }}%</td>
-                            <td>
-                                @if ($history->certificate_url)
-                                    <a href="{{ asset('storage/' . $history->certificate_url) }}" class="btn btn-sm btn-success" target="_blank">
-                                        <i class="fas fa-download"></i> Unduh
-                                    </a>
-                                @else
-                                    <span class="badge badge-secondary">-</span>
-                                @endif
-                            </td>
-                            <td>{{ $history->created_at->format('d-m-Y') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tingkat</th>
+                                <th>Mata Pelajaran</th>
+                                <th>Total Soal</th>
+                                {{-- <th>Jawaban Benar</th> --}}
+                                <th>Skor</th>
+                                <th>Persentase</th>
+                                <th>Sertifikat</th>
+                                <th>Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($histories as $index => $history)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $history->level->name }}</td>
+                                <td>{{ $history->subject->name }}</td>
+                                <td>{{ $history->total_questions }}</td>
+                                {{-- <td>{{ $history->correct_answer }}</td> --}}
+                                <td>{{ $history->score }}</td>
+                                <td>{{ $history->persentage_score }}%</td>
+                                <td>
+                                    @if ($history->certificate_url)
+                                        <a href="{{ asset('storage/' . $history->certificate_url) }}" class="btn btn-sm btn-success" target="_blank">
+                                            <i class="fas fa-download"></i> Unduh
+                                        </a>
+                                    @else
+                                        <span class="badge badge-secondary">-</span>
+                                    @endif
+                                </td>
+                                <td>{{ $history->created_at->format('d-m-Y') }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="card">
